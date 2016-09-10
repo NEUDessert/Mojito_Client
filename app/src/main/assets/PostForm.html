@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>用Post方法发送数据的表单。</title>
+</head>
+<body bgcolor="#FDF5E6">
+<h1 align="center">用Post方法发送数据的表单。 </h1>
+
+<form action="/Servlet_1/allparams" method="post">
+    数量:<input type="text" name="数量"><br>
+    货品:<input type="text" name="货品"><br>
+    单价:<input type="text" name="单价" value="$"><br>
+    <hr>
+    姓：<input type="text" name="姓"><br>
+    名：<input type="text" name="名"><br>
+    电邮：<input type="text" name="电邮"><br>
+    电话：<input type="text" name="电话"><br>
+    送货地址：
+    <textarea name="送货地址" rows="3" cols="40"></textarea><br>
+    信用卡类型：<br>
+        &nbsp;&nbsp;<input type="radio" name="信用卡类型" value="长城卡">长城卡<br>
+        &nbsp;&nbsp;<input type="radio" name="信用卡类型" value="龙卡">龙卡<br>
+        &nbsp;&nbsp;<input type="radio" name="信用卡类型" value="牡丹卡">牡丹卡<br>
+    卡号：
+    <input type="password" name="卡号"><br>
+    重输卡号：
+    <input type="password" name="卡号"><br><br>
+    <center><input type="submit" value="提交单"><br></center>
+</form>
+</body>
+</html>

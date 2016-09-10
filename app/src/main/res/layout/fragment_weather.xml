@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+        <!--虚伪的分割块-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="#ffffff"/>
+
+        <!--第一块-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+                <!--温度块-->
+                <dessert.chenxi.li.dessert_ui.dashboardView.view.DashboardView
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:id="@+id/dashboard_tmp"
+                    android:background="@color/safe_blue"/>
+
+                <!--虚伪的分割块-->
+                <ImageView
+                    android:layout_width="3dp"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"/>
+
+                <!--虚伪的分割块-->
+                <ImageView
+                    android:layout_width="3dp"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                        <!--天气块-->
+                        <ImageView
+                            android:id="@+id/iv_weather_item"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:background="#00bfff"
+                            android:src="@drawable/thunder" />
+
+                        <!--虚伪的分割块-->
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="3dp"
+                            android:background="#ffffff"/>
+
+                        <!--湿度块-->
+                        <LinearLayout
+                            android:layout_width="100dp"
+                            android:layout_height="147dp"
+                            android:background="#00bfff"
+                            android:orientation="vertical"
+                            android:id="@+id/linearLayout2">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="50dp"
+                                    android:text="@string/current_hum"
+                                    android:textSize="40sp"
+                                    android:textColor="#ffffff"
+                                    android:layout_gravity="center" />
+
+                                <TextView
+                                    android:id="@+id/tv_hum"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="45dp"
+                                    android:text="30"
+                                    android:textSize="40sp"
+                                    android:textColor="#ffffff"
+                                    android:layout_gravity="center_horizontal"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="@string/current_hum_unit"
+                                    android:textSize="20sp"
+                                    android:textColor="#ffffff"
+                                    android:layout_gravity="center" />
+                        </LinearLayout>
+                </LinearLayout>
+
+                <!--虚伪的分割块-->
+                <ImageView
+                    android:layout_width="3dp"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"/>
+
+        </LinearLayout>
+
+        <!--虚伪的分割块-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="#ffffff"/>
+
+        <!--第二块-->
+        <LinearLayout
+            android:layout_width="360dp"
+            android:layout_height="280dp"
+            android:orientation="vertical"
+            android:background="#00bfff">
+
+                <!--pm2.5块-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal">
+
+                        <!--虚伪的分割块-->
+                        <ImageView
+                            android:layout_width="3dp"
+                            android:layout_height="match_parent"
+                            android:background="#ffffff"/>
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"
+                            android:text="@string/current_PM"
+                            android:textSize="40sp"
+                            android:textColor="#ffffff"/>
+                        <TextView
+                            android:id="@+id/tv_pm25"
+                            android:layout_width="145dp"
+                            android:layout_height="match_parent"
+                            android:text="50"
+                            android:textSize="80sp"
+                            android:textColor="#ffffff"
+                            android:gravity="center"/>
+                        <TextView
+                            android:layout_width="145dp"
+                            android:layout_height="match_parent"
+                            android:text="@string/current_PM_unit"
+                            android:textSize="40sp"
+                            android:textColor="#ffffff"
+                            android:gravity="bottom"/>
+
+                        <!--虚伪的分割块-->
+                        <ImageView
+                            android:layout_width="3dp"
+                            android:layout_height="match_parent"
+                            android:background="#ffffff"/>
+
+                </LinearLayout>
+
+                <!--虚伪的分割块-->
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="#ffffff"/>
+
+                <!--警报块-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal">
+
+                        <!--燃气警报块-->
+                        <LinearLayout
+                            android:id="@+id/ly_gasWaring"
+                            android:layout_width="180dp"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:background="@color/safe_blue">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="match_parent"
+                                    android:text="@string/gas_warning"
+                                    android:textSize="40sp"
+                                    android:textColor="#ffffff"/>
+
+                                <TextView
+                                    android:id="@+id/tv_gasWarning"
+                                    android:layout_width="80dp"
+                                    android:layout_height="match_parent"
+                                    android:text="@string/safe"
+                                    android:textSize="40sp"
+                                    android:textColor="#ffffff"
+                                    android:gravity="center"/>
+                        </LinearLayout>
+
+                        <!--虚伪的分割块-->
+                        <ImageView
+                            android:layout_width="3dp"
+                            android:layout_height="match_parent"
+                            android:background="#ffffff"/>
+
+                        <!--烟雾警报块-->
+                        <LinearLayout
+                            android:id="@+id/ly_fireWaring"
+                            android:layout_width="180dp"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:background="@color/safe_blue">
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="match_parent"
+                                    android:text="@string/fire_waring"
+                                    android:textSize="40sp"
+                                    android:textColor="#ffffff"/>
+                                <TextView
+                                    android:id="@+id/tv_fireWarning"
+                                    android:layout_width="80dp"
+                                    android:layout_height="match_parent"
+                                    android:text="@string/safe"
+                                    android:textSize="40sp"
+                                    android:textColor="#ffffff"
+                                    android:gravity="center"/>
+
+                        </LinearLayout>
+
+                </LinearLayout>
+
+                <!--虚伪的分割块-->
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="#ffffff"/>
+
+        </LinearLayout>
+
+</LinearLayout>
