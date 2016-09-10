@@ -17,12 +17,14 @@ import okhttp3.Response;
  */
 
 public class OkHttpUtil {
-    private static final OkHttpClient mOkHttpClient = new OkHttpClient();
+    public static boolean result;
+    public static String response_string;
+    public static String TAG;
 
     /**
      * Post键值对
      */
-    public static final String TAG = "MainActivity";
+
     public static void postParams(String url, String account, String password) {
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
@@ -32,20 +34,33 @@ public class OkHttpUtil {
         Request request = new Request.Builder().url(url).post(body).build();
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
+
             @Override
             public void onFailure(Call call, IOException e) {
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String r = response.body().string();
+                response_string = response.body().string();
                 if (response.isSuccessful()) {
-                    Log.i(TAG, "httpGet1 OK: " + r);
+                    setResult(true);
+                    TAG = String.valueOf(result);
+                    Log.i(TAG, "httpGet OK: " + response_string);
                 } else {
-                    Log.i(TAG, "httpGet1 error: " + r);
+                    setResult(false);
+                    TAG = String.valueOf(result);
+                    Log.i(TAG, "httpGet error: " + response_string);
                 }
             }
         });
     }
 
+
+    public static boolean getResult(){
+        return result;
+    }
+
+    public static void setResult(boolean num){
+        result = num;
+    }
 }

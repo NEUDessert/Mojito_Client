@@ -92,22 +92,35 @@ public class WeatherFragment extends Fragment {
                 dashboardView.setPercent(tmp);
                 tvHum.setText(String.valueOf(hum));
                 tvPm25.setText(String.valueOf(pm25));
+                int tmpWarn = 80;
+                int humWarn = 20;
+                int pm25Warn = 950;
 
                 //火灾提醒
-                if ((tmp > 80 && hum < 20) || (pm25 > 830)){
+                if ((tmp > tmpWarn && hum < humWarn) || (pm25 > pm25Warn)){
                     //提醒
-                    lyFireWarning.setBackgroundColor(Color.rgb(251,2,2));
-                    tvFirewarning.setText("危险");
-
+                    if ((tmp > tmpWarn && hum < humWarn) && (pm25 > pm25Warn)){
+                        lyFireWarning.setBackgroundColor(Color.rgb(251,2,2));
+                        tvFirewarning.setText("危险");
+                        lyGaswarning.setBackgroundColor(Color.rgb(251,2,2));
+                        tvGaswarning.setText("危险");
+                    }else if ((tmp > tmpWarn && hum < humWarn) && !(pm25 > pm25Warn)){
+                        lyFireWarning.setBackgroundColor(Color.rgb(251,2,2));
+                        tvFirewarning.setText("危险");
+                    }else if (!(tmp > tmpWarn && hum < humWarn) && (pm25 > pm25Warn)){
+                        lyGaswarning.setBackgroundColor(Color.rgb(251,2,2));
+                        tvGaswarning.setText("危险");
+                    }
                     //震动
                     vibrator.vibrate(new long[]{100,10,100,1000}, 0);
-
 //                  warnAlarm();
                 }else {
                     //取消震动
                     vibrator.cancel();
-                    lyFireWarning.setBackgroundColor(Color.rgb(0,191,255));
+                    lyFireWarning.setBackgroundColor(Color.rgb(119,118,118));
                     tvFirewarning.setText("无");
+                    lyGaswarning.setBackgroundColor(Color.rgb(119,118,118));
+                    tvGaswarning.setText("无");
                 }
 
                 super.handleMessage(msg);
@@ -166,6 +179,8 @@ public class WeatherFragment extends Fragment {
         dashboardView.setPercent(0);
         dashboardView.setText("♪ ");
         dashboardView.setUnit("℃");
+        dashboardView.setStartColor(Color.rgb(240,50,21));
+        dashboardView.setEndColor(Color.rgb(112,230,194));
 
         new Thread(new MyThread()).start();
         // Inflate the layout for this fragment

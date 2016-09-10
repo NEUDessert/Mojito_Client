@@ -487,7 +487,7 @@ public class DashboardView extends View {
     }
 
     /**
-     * 设置起始颜色
+     * 设置右边颜色
      * @param startColor
      */
     public void setStartColor(int startColor) {
@@ -496,7 +496,7 @@ public class DashboardView extends View {
     }
 
     /**
-     * 设置结束颜色
+     * 设置左边颜色
      * @param endColor
      */
     public void setEndColor(int endColor) {

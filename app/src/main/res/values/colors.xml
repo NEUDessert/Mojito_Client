@@ -6,11 +6,15 @@
     <color name="danger_red">#fb0202</color>
     <color name="safe_blue">#00bfff</color>
 
+    <color name="BLACK">#000000</color>
     <color name="GREEN">#FF00FF00</color>
     <color name="RED">#FFFF0000</color>
     <color name="PointerColor">#C9DEEE</color>
     <color name="Yellow">#FFFFFF00</color>
     <color name="bg_gray">#777676</color>
+    <color name="login_button_blue">#1fbaf3</color>
+    <color name="hint_color">#cacbcc</color>
+    <color name="login_bg_color">#ecedf1</color>
 
     <color name="series_not_end">#fffec500</color>
     <color name="sienna">#ffa0522d</color>
@@ -23,8 +27,14 @@
     <color name="scale">#58000000</color>
     <color name="leftRight">#e1dcd6</color>
     <color name="rightRight">#f4efe9</color>
-    <color name="outsideBlue">#2690f8</color>
-    <color name="insideBlue">#58ade5</color>
+    <color name="outsideBlue">#303F9F</color>
+    <color name="insideBlue">#9dcff0</color>
     <color name="white">#FFFFFF</color>
     <color name="insideCircle">#c2b9b0</color>
+
+    <color name="cold">#70bff1</color>
+    <color name="cool">#70e6c2</color>
+    <color name="warm">#eb8f5e</color>
+    <color name="hot">#f0563e</color>
+    <color name="button_dark">#373798</color>
 </resources>
