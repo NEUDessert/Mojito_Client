@@ -6,12 +6,14 @@
     <color name="danger_red">#fb0202</color>
     <color name="safe_blue">#00bfff</color>
 
+    <color name="transParent">#00000000</color>
     <color name="BLACK">#000000</color>
     <color name="GREEN">#FF00FF00</color>
     <color name="RED">#FFFF0000</color>
     <color name="PointerColor">#C9DEEE</color>
     <color name="Yellow">#FFFFFF00</color>
-    <color name="bg_gray">#777676</color>
+    <color name="bg_gray">#1fbaf3</color>
+    <color name="text_gray">#777676</color>
     <color name="login_button_blue">#1fbaf3</color>
     <color name="hint_color">#cacbcc</color>
     <color name="login_bg_color">#ecedf1</color>

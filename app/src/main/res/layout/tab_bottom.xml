@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/bottom_tab_weather"
-                android:textColor="@color/button_dark"
+                android:textColor="@color/colorPrimary"
                 android:textSize="12sp"/>
         </LinearLayout>
 
@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/bottom_tab_video"
-                android:textColor="@color/bg_gray"
+                android:textColor="@color/text_gray"
                 android:textSize="12sp"/>
         </LinearLayout>
 
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/bottom_tab_home"
-                android:textColor="@color/bg_gray"
+                android:textColor="@color/text_gray"
                 android:textSize="12sp"/>
         </LinearLayout>
 

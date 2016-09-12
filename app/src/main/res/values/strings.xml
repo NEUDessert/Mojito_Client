@@ -31,6 +31,8 @@
     <string name="historyData">历史数据</string>
     <string name="moreSetting">更多选项</string>
     <string name="futureWeather">未来天气</string>
+    <string name="clickForMore">更多</string>
+    <string name="homeName">用户名</string>
 
     <string-array name="location_values">
         <item>卧室一</item>

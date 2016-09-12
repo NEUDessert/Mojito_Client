@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
         //  设置选中时的图片颜色及字体颜色，若对应的fragment为空则创建，将此时的界面内容交给对应的fragment。若不为空，则将它显示出来。
             case REQUEST_CODE_WEATHER:
                 ivWeather.setImageResource(R.drawable.weather_l);
-                tvWeather.setTextColor(Color.rgb(55, 55, 152));
+                tvWeather.setTextColor(this.getResources().getColor(R.color.colorPrimary));
                 if (fraTabWeather == null){
                     fraTabWeather = new WeatherFragment();
                     transaction.add(R.id.id_content, fraTabWeather);
@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
 
             case REQUEST_CODE_VIDEO:
                 ivVideo.setImageResource(R.drawable.video_l);
-                tvVideo.setTextColor(Color.rgb(55, 55, 152));
+                tvVideo.setTextColor(this.getResources().getColor(R.color.colorPrimary));
                 if (fraTabVideo == null){
                     fraTabVideo = new VideoFragment();
                     transaction.add(R.id.id_content, fraTabVideo);
@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
 
             case REQUEST_CODE_HOME:
                 ivHome.setImageResource(R.drawable.home_l);
-                tvHome.setTextColor(Color.rgb(55, 55, 152));
+                tvHome.setTextColor(this.getResources().getColor(R.color.colorPrimary));
                 if (fraTabHome == null){
                     fraTabHome = new HomeFragment();
                     transaction.add(R.id.id_content, fraTabHome);
@@ -333,9 +333,9 @@ public class MainActivity extends AppCompatActivity {
         ivVideo.setImageResource(R.drawable.video_h);
         ivHome.setImageResource(R.drawable.home_h);
 
-        tvWeather.setTextColor(Color.rgb(119, 118, 118));
-        tvVideo.setTextColor(Color.rgb(119, 118, 118));
-        tvHome.setTextColor(Color.rgb(119, 118, 118));
+        tvWeather.setTextColor(this.getResources().getColor(R.color.text_gray));
+        tvVideo.setTextColor(this.getResources().getColor(R.color.text_gray));
+        tvHome.setTextColor(this.getResources().getColor(R.color.text_gray));
     }
 
     //  将所有的fragment均设为隐藏状态。便于下一步的选择并显示。

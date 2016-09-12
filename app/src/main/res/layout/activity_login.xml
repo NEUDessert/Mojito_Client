@@ -16,18 +16,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="225dp"
         android:orientation="vertical"
         android:gravity="center"
         android:id="@+id/linearLayout">
-        <com.thinkcool.circletextimageview.CircleTextImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
-            android:layout_height="96dp"
-            android:layout_width="96dp"
-            android:src="@drawable/not_login"
-            app:citv_border_width="2dp"
-            app:citv_border_color="@color/bg_gray"/>
+
+        <ImageView
+            android:layout_width="286dp"
+            android:layout_height="135dp"
+            android:src="@drawable/logo"/>
     </LinearLayout>
 
     <ScrollView
@@ -51,15 +48,6 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:background="@null"/>
-            <!--<EditText-->
-                <!--android:id="@+id/account"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="40dp"-->
-                <!--android:hint="@string/account"-->
-                <!--android:textColorHint="@color/hint_color"-->
-                <!--android:maxLines="1"-->
-                <!--android:singleLine="true"-->
-                <!--android:background="@null"/>-->
 
             <EditText
                 android:id="@+id/password"
@@ -87,7 +75,7 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/btn_signIn"
+            android:id="@+id/btn_loginIn"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

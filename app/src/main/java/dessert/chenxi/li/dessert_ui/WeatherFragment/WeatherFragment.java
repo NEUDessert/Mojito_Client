@@ -100,15 +100,15 @@ public class WeatherFragment extends Fragment {
                 if ((tmp > tmpWarn && hum < humWarn) || (pm25 > pm25Warn)){
                     //提醒
                     if ((tmp > tmpWarn && hum < humWarn) && (pm25 > pm25Warn)){
-                        lyFireWarning.setBackgroundColor(Color.rgb(251,2,2));
+                        lyFireWarning.setBackgroundColor(Color.RED);
                         tvFirewarning.setText("危险");
-                        lyGaswarning.setBackgroundColor(Color.rgb(251,2,2));
+                        lyGaswarning.setBackgroundColor(Color.RED);
                         tvGaswarning.setText("危险");
                     }else if ((tmp > tmpWarn && hum < humWarn) && !(pm25 > pm25Warn)){
-                        lyFireWarning.setBackgroundColor(Color.rgb(251,2,2));
+                        lyFireWarning.setBackgroundColor(Color.RED);
                         tvFirewarning.setText("危险");
                     }else if (!(tmp > tmpWarn && hum < humWarn) && (pm25 > pm25Warn)){
-                        lyGaswarning.setBackgroundColor(Color.rgb(251,2,2));
+                        lyGaswarning.setBackgroundColor(Color.RED);
                         tvGaswarning.setText("危险");
                     }
                     //震动
@@ -117,9 +117,9 @@ public class WeatherFragment extends Fragment {
                 }else {
                     //取消震动
                     vibrator.cancel();
-                    lyFireWarning.setBackgroundColor(Color.rgb(119,118,118));
+                    lyFireWarning.setBackgroundColor(Color.rgb(31, 186, 243));
                     tvFirewarning.setText("无");
-                    lyGaswarning.setBackgroundColor(Color.rgb(119,118,118));
+                    lyGaswarning.setBackgroundColor(Color.rgb(31, 186, 243));
                     tvGaswarning.setText("无");
                 }
 

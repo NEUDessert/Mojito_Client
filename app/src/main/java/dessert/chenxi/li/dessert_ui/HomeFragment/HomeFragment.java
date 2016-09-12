@@ -28,13 +28,10 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private String lastUrl = "http://115.159.205.225:8080/li";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private String account, password;
-    private EditText etAccount, etPassword;
 
     private OnFragmentInteractionListener mListener;
 
@@ -74,11 +71,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        Button btnLogin = (Button)view.findViewById(R.id.login_btn);
-        etAccount = (EditText) view.findViewById(R.id.lgoin_accounts);
-        etPassword = (EditText) view.findViewById(R.id.login_password);
 
-        btnLogin.setOnClickListener(ClickHandler);
 
         return view;
     }
@@ -87,12 +80,7 @@ public class HomeFragment extends Fragment {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.login_btn:
-                    account = etAccount.getText().toString();
-                    password = etPassword.getText().toString();
-//                    lastUrl = lastUrl +"?"+"username="+account+"&"+"password="+password;
-                    OkHttpUtil.postParams(lastUrl, account, password);
-                    break;
+
 
                 default:
                     break;

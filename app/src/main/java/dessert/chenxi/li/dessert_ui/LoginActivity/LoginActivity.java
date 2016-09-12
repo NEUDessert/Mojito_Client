@@ -104,7 +104,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 //            }
 //        });
 
-        btnLogin = (Button) findViewById(R.id.btn_signIn);
+        btnLogin = (Button) findViewById(R.id.btn_loginIn);
         portraitPic = (CircleTextImageView) findViewById(R.id.profile_image);
         tvLoginFail = (TextView) findViewById(R.id.tv_loginFail);
         tvRegister = (TextView) findViewById(R.id.tv_register);
@@ -140,7 +140,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             case R.id.tv_register:
                 Toast.makeText(getApplicationContext(), "现在不让注册！", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.btn_signIn:
+            case R.id.btn_loginIn:
                 attemptLogin();
 //                if(!(mAccountView.getText().equals("")) && !(mPasswordView.getText().equals(""))){
 //                    account = mAccountView.getText().toString();
