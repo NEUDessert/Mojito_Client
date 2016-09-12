@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Environment;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -19,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -29,6 +32,7 @@ import android.widget.Toast;
 import com.thinkcool.circletextimageview.CircleTextImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -73,10 +77,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private TextView tvLoginFail, tvRegister;
     private CircleTextImageView portraitPic;
     private String account, password;
-    private String uri = "http://115.159.205.225:8080/li/test";
+    private String lastUrl = "http://115.159.205.225:8080/li/";
+    private String newUrl = "http://219.216.65.185:8082/user/login.do";
     private String historyInfo ;
     private String pieces[];
-    private String fileName = "HistoryInfo.txt";
+    private String fileName = Environment.getExternalStorageDirectory().getPath()
+                            +File.separator+".DataStorage"+File.separator +"HistoryInfo.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,16 +112,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        if((readInfo().equals("null"))){
+        if(!(readInfo().equals(""))){
+            Log.i("path", fileName);
             historyInfo = readInfo();
             for (int i=0; i<2; i++) {
                 pieces = historyInfo.split(":");
             }
-            signIn(uri, pieces[0], pieces[1]);
+            signIn(pieces[0], pieces[1]);
             Toast.makeText(getApplicationContext(), "历史账号登陆成功！", Toast.LENGTH_SHORT).show();
             Intent intent=new Intent();
             //键值对
-            intent.putExtra("account", account);
+            intent.putExtra("account", pieces[0]);
             //从此activity传到另一Activity
             intent.setClass(LoginActivity.this, MainActivity.class);
             //启动另一个Activity
@@ -134,53 +141,53 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 Toast.makeText(getApplicationContext(), "现在不让注册！", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_signIn:
-                if((mAccountView.getText() != null) && (mPasswordView.getText() != null)){
-                    account = mAccountView.getText().toString();
-                    password = mPasswordView.getText().toString();
-                    if(signIn(uri, account, password)) {
-                        Toast.makeText(getApplicationContext(), "登陆成功！", Toast.LENGTH_SHORT).show();
-//                          Intent intent = new Intent();
-//                          intent.setClass(LoginActivity.this, MainActivity.class);
-//                          Bundle bundle = new Bundle();
-//                          bundle.putString("account", account);
-//                          intent.putExtra("bundle", bundle);
-//                          setResult(1, intent);
-//                          LoginActivity.this.finish();
-                        saveInfo(account, password);
-
-                        Intent intent=new Intent();
-                        //键值对
-                        intent.putExtra("account", account);
-                        //从此activity传到另一Activity
-                        intent.setClass(LoginActivity.this, MainActivity.class);
-                        //启动另一个Activity
-                        LoginActivity.this.startActivity(intent);
-                        LoginActivity.this.finish();
-                    }else {
-                        Toast.makeText(getApplicationContext(), "登陆失败!", Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                }
+                attemptLogin();
+//                if(!(mAccountView.getText().equals("")) && !(mPasswordView.getText().equals(""))){
+//                    account = mAccountView.getText().toString();
+//                    password = mPasswordView.getText().toString();
+//                    if(signIn(uri, account, password)) {
+//                        Toast.makeText(getApplicationContext(), "登陆成功！", Toast.LENGTH_SHORT).show();
+////                          Intent intent = new Intent();
+////                          intent.setClass(LoginActivity.this, MainActivity.class);
+////                          Bundle bundle = new Bundle();
+////                          bundle.putString("account", account);
+////                          intent.putExtra("bundle", bundle);
+////                          setResult(1, intent);
+////                          LoginActivity.this.finish();
+//                        saveInfo(account, password);
+//
+//                        Intent intent=new Intent();
+//                        //键值对
+//                        intent.putExtra("account", account);
+//                        //从此activity传到另一Activity
+//                        intent.setClass(LoginActivity.this, MainActivity.class);
+//                        //启动另一个Activity
+//                        LoginActivity.this.startActivity(intent);
+//                        LoginActivity.this.finish();
+//                    }else {
+//                        Toast.makeText(getApplicationContext(), "登陆失败!", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    }
+//                }
                 break;
             default:
                 break;
         }
     }
 
-    private boolean signIn(String uri, String account, String password){
-        OkHttpUtil.postParams(uri, account, password);
-        if (OkHttpUtil.getResult()){
+    private boolean signIn(String account, String password){
+        if (OkHttpUtil.postParams(lastUrl, account, password)){
             return true;
         }else {
             return false;
         }
     }
 
+//    保存到文档
     private void saveInfo(String name, String password) {
         String content = name +":"+ password;
         try{
-            FileOutputStream outputStream = openFileOutput(fileName,
-                Activity.MODE_PRIVATE);
+            FileOutputStream outputStream = new FileOutputStream(fileName);
             outputStream.write(content.getBytes());
             outputStream.flush();
             outputStream.close();
@@ -200,10 +207,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     }
 
+//    读取文档
     private String readInfo(){
         try {
-            FileInputStream inputStream = this.openFileInput(fileName);
-            byte[] bytes = new byte[1024];
+            FileInputStream inputStream = new FileInputStream(fileName);
+            byte[] bytes = new byte[64];
             ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
             while (inputStream.read(bytes) != -1) {
                 arrayOutputStream.write(bytes, 0, bytes.length);
@@ -407,37 +415,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return false;
+            }
 
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-
-//                String account = mAccount;
-//                String password = mPassword;
-//                String baseUrl = "http://219.216.65.185:8082/user/login.do";
-//                OkHttpUtil.postParams(baseUrl, account, password);
-////                if(OkHttpUtil.getResult() == 1){
-////                    Intent intent = new Intent(LoginActivity.this , MainActivity.class);
-////                    startActivity(intent);
-//                    Intent intent = new Intent();
-//                    intent.setClass(LoginActivity.this, MainActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putBoolean("isLogin", true);
-//                    intent.putExtra("bundle", bundle);
-//                    setResult(1, intent);
-//                    LoginActivity.this.finish();
-////                }
-
-//                if (pieces[0].equals(mAccount)) {
-//                    // Account exists, return true if the password matches.
-//                    return pieces[1].equals(mPassword);
-//                }
-
-//            }
-
-
-
-            // TODO: register the new account here.
-            return true;
+            return signIn(mAccount, mPassword);
         }
 
         @Override
@@ -446,8 +431,18 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
 
             if (success) {
-                finish();
+                Toast.makeText(getApplicationContext(), "登陆成功！", Toast.LENGTH_SHORT).show();
+                saveInfo(mAccount, mPassword);
+                Intent intent=new Intent();
+                //键值对
+                intent.putExtra("account", account);
+                //从此activity传到另一Activity
+                intent.setClass(LoginActivity.this, MainActivity.class);
+                //启动另一个Activity
+                LoginActivity.this.startActivity(intent);
+                LoginActivity.this.finish();
             } else {
+                Toast.makeText(getApplicationContext(), "登陆失败！", Toast.LENGTH_SHORT).show();
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }

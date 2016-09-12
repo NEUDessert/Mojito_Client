@@ -24,5 +24,4 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.github.thinkcool:circletextimageview:1.0.20151218'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'com.zhy:percent-support-extends:1.0.1'
 }

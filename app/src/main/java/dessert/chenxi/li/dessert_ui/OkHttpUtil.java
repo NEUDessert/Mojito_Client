@@ -18,20 +18,19 @@ import okhttp3.Response;
 
 public class OkHttpUtil {
     public static boolean result;
-    public static String response_string;
     public static String TAG;
+    public static OkHttpClient client = new OkHttpClient();;
 
     /**
      * Post键值对
      */
 
-    public static void postParams(String url, String account, String password) {
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add("a", account)
-                .add("b", password)
-                .build();
+    public static boolean postParams(String url, final String account, final String password) {
+        RequestBody body = new FormBody.Builder().add("username", account)
+                                                .add("password", password).build();
+
         Request request = new Request.Builder().url(url).post(body).build();
+        Log.i("request",request.toString());
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
 
@@ -41,20 +40,26 @@ public class OkHttpUtil {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                response_string = response.body().string();
+
                 if (response.isSuccessful()) {
                     setResult(true);
                     TAG = String.valueOf(result);
-                    Log.i(TAG, "httpGet OK: " + response_string);
+                    Log.i(TAG, "httpGet OK: " + account+","+password +","+ response.toString());
+                    Log.i("body", response.body().string());
                 } else {
                     setResult(false);
                     TAG = String.valueOf(result);
-                    Log.i(TAG, "httpGet error: " + response_string);
+                    Log.i(TAG, "httpGet error: " + account+","+password +","+ response.toString());
+                    Log.i("body", response.body().string());
                 }
             }
         });
+        if (getResult()){
+            return true;
+        }else {
+            return false;
+        }
     }
-
 
     public static boolean getResult(){
         return result;
