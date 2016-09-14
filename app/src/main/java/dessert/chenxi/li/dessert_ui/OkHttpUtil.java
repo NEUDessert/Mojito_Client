@@ -3,7 +3,6 @@ package dessert.chenxi.li.dessert_ui;
 import android.util.Log;
 
 import java.io.IOException;
-import java.util.jar.JarException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -64,6 +63,46 @@ public class OkHttpUtil {
         }
     }
 
+    public static boolean postMoreParams(String url, final String account, final String devID,
+                                                     final String temp, final String hum, final String air) {
+        RequestBody body = new FormBody.Builder().add("username", account)
+                                                 .add("devID", devID)
+                                                 .add("temp", temp)
+                                                 .add("hum", hum)
+                                                 .add("air", air)
+                                                 .build();
+        Request request = new Request.Builder().url(url).post(body).build();
+        Log.i("request",request.toString());
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                if (response.isSuccessful()) {
+                    setResult(true);
+                    TAG = String.valueOf(result);
+                    Log.i(TAG, "httpGet OK: "+response.toString());
+                    Log.i("body", response.body().string());
+                } else {
+                    setResult(false);
+                    TAG = String.valueOf(result);
+                    Log.i(TAG, "httpGet error: " + response.toString());
+                    Log.i("body", response.body().string());
+                }
+            }
+        });
+        if (getResult()){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     /**
      * POST提交Json数据
      *
@@ -91,6 +130,7 @@ public class OkHttpUtil {
             }
         });
     }
+
     public static boolean getResult(){
         return result;
     }
@@ -98,4 +138,38 @@ public class OkHttpUtil {
     public static void setResult(boolean num){
         result = num;
     }
+
+    public static void weatherGet() throws IOException{
+        String url = " http://api.yytianqi.com/forecast7d?city=CH070101&key=412mnmei82mg7v49";
+
+        Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+        Log.i("request", request.toString());
+
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                if (response.isSuccessful()) {
+                    Log.i("Weather", "httpGet OK: " + response.toString());
+                    Log.i("body", response.body().string());
+                } else {
+                    Log.i("Weather", "httpGet error: " + response.toString());
+                    Log.i("body", response.body().string());
+                    return response.body().string();
+                }
+            }
+        });
+
+    }
+
+
+
 }

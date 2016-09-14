@@ -70,6 +70,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <Button
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:text="信息"
+                android:id="@+id/btnInfo" />
+
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:text="天气"
+                    android:id="@+id/btnWeather" />
+
             </LinearLayout>
 
         </LinearLayout>

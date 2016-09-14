@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import dessert.chenxi.li.dessert_ui.OkHttpUtil;
@@ -43,6 +44,7 @@ public class HomeFragment extends Fragment {
 
     private SimpleLineChart mSimpleLineChart;
     private TextView tvAccount;
+    private Button btnWeather, btnInfo;
 
     private OnFragmentInteractionListener mListener;
 
@@ -84,6 +86,8 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mSimpleLineChart = (SimpleLineChart) view.findViewById(R.id.simpleLineChart);
         tvAccount = (TextView) view.findViewById(R.id.tv_home_account);
+        btnWeather = (Button) view.findViewById(R.id.btnWeather);
+        btnInfo = (Button) view.findViewById(R.id.btnInfo);
 
         String[] xItem = {"1","2","3","4","5","6","7"};
         String[] yItem = {"30","20","10","0","-10"};
@@ -98,6 +102,9 @@ public class HomeFragment extends Fragment {
         mSimpleLineChart.setData(pointMap);
 
         tvAccount.setText(account);
+        btnWeather.setOnClickListener(ClickHandler);
+        btnInfo.setOnClickListener(ClickHandler);
+
 
         return view;
     }
@@ -106,6 +113,19 @@ public class HomeFragment extends Fragment {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
+                case R.id.btnInfo:
+                    Log.i("btnClickInfo", "ok");
+                    OkHttpUtil.postMoreParams(url, "233", "1", "50", "50", "150");
+                    break;
+
+                case R.id.btnWeather:
+                    Log.i("btnClickWeather", "ok");
+                    try {
+                        OkHttpUtil.weatherGet();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
                 default:
                     break;
             }
