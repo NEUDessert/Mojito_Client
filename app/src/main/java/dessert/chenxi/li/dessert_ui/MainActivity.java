@@ -35,6 +35,8 @@ import android.widget.Toast;
 import java.io.IOException;
 
 import cn.wch.ch34xuartdriver.CH34xUARTDriver;
+import dessert.chenxi.li.dessert_ui.DataBase.DataBase;
+import dessert.chenxi.li.dessert_ui.DataBase.DataBaseUtil;
 import dessert.chenxi.li.dessert_ui.HomeFragment.HomeFragment;
 import dessert.chenxi.li.dessert_ui.LoginActivity.LoginActivity;
 import dessert.chenxi.li.dessert_ui.VideoFragment.VideoFragment;
@@ -162,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
         tvLocation = (TextView) findViewById(R.id.tv_deviceName);
         locationSpinner = (Spinner)findViewById(R.id.locationValues);
 //        if (isLogin) {
-            ArrayAdapter<CharSequence> baudAdapter = ArrayAdapter
-                    .createFromResource(this, R.array.location_values,
-                            R.layout.my_spinner_textview);
-            baudAdapter.setDropDownViewResource(R.layout.my_spinner_textview);
-            locationSpinner.setAdapter(baudAdapter);
+        ArrayAdapter<CharSequence> baudAdapter = ArrayAdapter
+                .createFromResource(this, R.array.location_values,
+                        R.layout.my_spinner_textview);
+        baudAdapter.setDropDownViewResource(R.layout.my_spinner_textview);
+        locationSpinner.setAdapter(baudAdapter);
 //        }else {
 //            ArrayAdapter<CharSequence> baudAdapter = ArrayAdapter
 //                    .createFromResource(this, R.array.notLogin,
@@ -319,6 +321,7 @@ public class MainActivity extends AppCompatActivity {
                 if (fraTabHome == null){
                     fraTabHome = new HomeFragment();
                     transaction.add(R.id.id_content, fraTabHome);
+                    fraTabHome.setAccount(account);
                 } else {
                     transaction.show(fraTabHome);
                 }
@@ -404,7 +407,14 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "等一会儿吧", Toast.LENGTH_SHORT).show();
             return true;
         }
-
+        if (id == R.id.action_signOut){
+            Toast.makeText(getApplicationContext(), "等一会儿吧", Toast.LENGTH_SHORT).show();
+            String name = getAccount();
+            DataBaseUtil.deleteInSql(this, name);
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            MainActivity.this.startActivity(i);
+            MainActivity.this.finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -420,7 +430,7 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     //登陆标记
-    private void setAccount(String name){
-        account = name;
+    public String getAccount(){
+        return account;
     }
 }

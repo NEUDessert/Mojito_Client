@@ -91,12 +91,10 @@ public class DashboardView extends View {
         init(context);
     }
 
-
     private void init(Context context) {
         mContext = context;
         initAttr();
         initPaint();
-
     }
 
     private void initPaint() {

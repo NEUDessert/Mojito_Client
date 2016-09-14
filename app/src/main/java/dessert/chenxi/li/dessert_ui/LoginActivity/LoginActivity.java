@@ -5,8 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.DatabaseUtils;
 import android.os.Environment;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dessert.chenxi.li.dessert_ui.DataBase.DataBase;
+import dessert.chenxi.li.dessert_ui.DataBase.DataBaseUtil;
 import dessert.chenxi.li.dessert_ui.MainActivity;
 import dessert.chenxi.li.dessert_ui.OkHttpUtil;
 import dessert.chenxi.li.dessert_ui.R;
@@ -76,14 +78,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private Button btnLogin;
     private TextView tvLoginFail, tvRegister;
     private CircleTextImageView portraitPic;
-    private String account, password;
     private String lastUrl = "http://115.159.205.225:8080/li/";
     private String newUrl = "http://219.216.65.185:8082/user/login.do";
     private String historyInfo ;
     private String pieces[];
-    private String fileName = Environment.getExternalStorageDirectory().getPath()
-                            +File.separator+".DataStorage"+File.separator +"HistoryInfo.txt";
+    private DataBase dataBase;
 
+//    private String fileName = Environment.getExternalStorageDirectory().getPath()
+//                            +File.separator+".DataStorage"+File.separator +"HistoryInfo.txt";
+    private String fileName = Environment.getExternalStorageDirectory().getPath()
+                                +File.separator +"HistoryInfo.txt";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,8 +95,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         // Set up the login form.
         mAccountView = (AutoCompleteTextView) findViewById(R.id.account);
         populateAutoComplete();
-
         mPasswordView = (EditText) findViewById(R.id.password);
+        dataBase = new DataBase(LoginActivity.this);
+
 //        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override
 //            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -112,13 +117,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        if(!(readInfo().equals(""))){
-            Log.i("path", fileName);
-            historyInfo = readInfo();
+        if(!DataBaseUtil.isEmpty(LoginActivity.this)){
+//            Log.i("path", fileName);
+            historyInfo = DataBaseUtil.readFirstInSql(LoginActivity.this);
             for (int i=0; i<2; i++) {
                 pieces = historyInfo.split(":");
             }
             signIn(pieces[0], pieces[1]);
+
             Toast.makeText(getApplicationContext(), "历史账号登陆成功！", Toast.LENGTH_SHORT).show();
             Intent intent=new Intent();
             //键值对
@@ -182,6 +188,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             return false;
         }
     }
+
 
 //    保存到文档
     private void saveInfo(String name, String password) {
@@ -432,10 +439,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             if (success) {
                 Toast.makeText(getApplicationContext(), "登陆成功！", Toast.LENGTH_SHORT).show();
-                saveInfo(mAccount, mPassword);
+                DataBaseUtil.insertInSql(LoginActivity.this, mAccount, mPassword);
                 Intent intent=new Intent();
                 //键值对
-                intent.putExtra("account", account);
+                intent.putExtra("account", mAccount);
                 //从此activity传到另一Activity
                 intent.setClass(LoginActivity.this, MainActivity.class);
                 //启动另一个Activity

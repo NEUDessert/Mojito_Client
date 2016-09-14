@@ -4,16 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
-import java.io.IOException;
+import java.util.HashMap;
 
 import dessert.chenxi.li.dessert_ui.OkHttpUtil;
 import dessert.chenxi.li.dessert_ui.R;
+import dessert.chenxi.li.dessert_ui.SimpleLineChart.SimpleLineChart;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,9 +33,16 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private String url = "http://192.168.50.198:8080/DataServer/uploadData";
+    private String lastUrl = "http://115.159.205.225:8080/li/";
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private String account;
+
+    private SimpleLineChart mSimpleLineChart;
+    private TextView tvAccount;
 
     private OnFragmentInteractionListener mListener;
 
@@ -71,7 +82,22 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        mSimpleLineChart = (SimpleLineChart) view.findViewById(R.id.simpleLineChart);
+        tvAccount = (TextView) view.findViewById(R.id.tv_home_account);
 
+        String[] xItem = {"1","2","3","4","5","6","7"};
+        String[] yItem = {"30","20","10","0","-10"};
+        if(mSimpleLineChart == null)
+            Log.e("wing","null!!!!");
+        mSimpleLineChart.setXItem(xItem);
+        mSimpleLineChart.setYItem(yItem);
+        HashMap<Integer,Integer> pointMap = new HashMap();
+        for(int i = 0;i<xItem.length;i++){
+            pointMap.put(i, (int) (Math.random()*5));
+        }
+        mSimpleLineChart.setData(pointMap);
+
+        tvAccount.setText(account);
 
         return view;
     }
@@ -80,8 +106,6 @@ public class HomeFragment extends Fragment {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-
-
                 default:
                     break;
             }
@@ -124,5 +148,9 @@ public class HomeFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void setAccount(String name){
+        account = name;
     }
 }

@@ -92,9 +92,9 @@ public class WeatherFragment extends Fragment {
                 dashboardView.setPercent(tmp);
                 tvHum.setText(String.valueOf(hum));
                 tvPm25.setText(String.valueOf(pm25));
-                int tmpWarn = 80;
-                int humWarn = 20;
-                int pm25Warn = 950;
+                int tmpWarn = 90;
+                int humWarn = 10;
+                int pm25Warn = 980;
 
                 //火灾提醒
                 if ((tmp > tmpWarn && hum < humWarn) || (pm25 > pm25Warn)){
