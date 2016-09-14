@@ -18,16 +18,17 @@ import okhttp3.Response;
  */
 
 public class OkHttpUtil {
-    public static boolean result;
-    public static String TAG;
+    public static boolean result = false;
+    public static String weatherJSON, loginStr="";
     public static OkHttpClient client = new OkHttpClient();
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
 
     /**
      * Post键值对
      */
 
-    public static boolean postParams(String url, final String account, final String password) {
+    public static boolean LoginPostParams(String url, final String account, final String password) {
         RequestBody body = new FormBody.Builder().add("username", account)
                                                 .add("password", password).build();
 
@@ -35,32 +36,25 @@ public class OkHttpUtil {
         Log.i("request",request.toString());
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
-
             @Override
             public void onFailure(Call call, IOException e) {
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-
+                loginStr = response.body().string();
                 if (response.isSuccessful()) {
+                    Log.i("200", "httpGet OK: " + account+","+password +","+ response.toString());
+                    Log.i("body", loginStr);
                     setResult(true);
-                    TAG = String.valueOf(result);
-                    Log.i(TAG, "httpGet OK: " + account+","+password +","+ response.toString());
-                    Log.i("body", response.body().string());
                 } else {
+                    Log.i("!200", "httpGet error: " + account+","+password +","+ response.toString());
+                    Log.i("body", loginStr);
                     setResult(false);
-                    TAG = String.valueOf(result);
-                    Log.i(TAG, "httpGet error: " + account+","+password +","+ response.toString());
-                    Log.i("body", response.body().string());
                 }
             }
         });
-        if (getResult()){
-            return true;
-        }else {
-            return false;
-        }
+        return result;
     }
 
     public static boolean postMoreParams(String url, final String account, final String devID,
@@ -85,22 +79,16 @@ public class OkHttpUtil {
 
                 if (response.isSuccessful()) {
                     setResult(true);
-                    TAG = String.valueOf(result);
-                    Log.i(TAG, "httpGet OK: "+response.toString());
+                    Log.i("200", "httpGet OK: "+response.toString());
                     Log.i("body", response.body().string());
                 } else {
                     setResult(false);
-                    TAG = String.valueOf(result);
-                    Log.i(TAG, "httpGet error: " + response.toString());
+                    Log.i("!200", "httpGet error: " + response.toString());
                     Log.i("body", response.body().string());
                 }
             }
         });
-        if (getResult()){
-            return true;
-        }else {
-            return false;
-        }
+        return result;
     }
 
     /**
@@ -123,9 +111,9 @@ public class OkHttpUtil {
             public void onResponse(Call call, Response response) throws IOException {
                 String r = response.body().string();
                 if (response.isSuccessful()) {
-                    Log.i(TAG, "httpGet1 OK: " + r);
+                    Log.i("200", "httpGet1 OK: " + r);
                 } else {
-                    Log.i(TAG, "httpGet1 error: " + r);
+                    Log.i("!200", "httpGet1 error: " + r);
                 }
             }
         });
@@ -139,9 +127,8 @@ public class OkHttpUtil {
         result = num;
     }
 
-    public static void weatherGet() throws IOException{
-        String url = " http://api.yytianqi.com/forecast7d?city=CH070101&key=412mnmei82mg7v49";
-
+    public static String weatherGet() throws IOException{
+        String url = " http://api.yytianqi.com/forecast7d?city=CH070101&key=w5ersf4nbd17ajhf";
         Request request = new Request.Builder()
                     .url(url)
                     .build();
@@ -158,10 +145,11 @@ public class OkHttpUtil {
             public void onResponse(Call call, Response response) throws IOException {
 
                 if (response.isSuccessful()) {
+                    weatherJSON = response.body().string();
                     Log.i("Weather", "httpGet OK: " + response.toString());
                     Log.i("body", response.body().string());
-
                 } else {
+                    weatherJSON = response.body().string();
                     Log.i("Weather", "httpGet error: " + response.toString());
                     Log.i("body", response.body().string());
 
@@ -169,6 +157,7 @@ public class OkHttpUtil {
             }
         });
 
+        return weatherJSON;
     }
 
 

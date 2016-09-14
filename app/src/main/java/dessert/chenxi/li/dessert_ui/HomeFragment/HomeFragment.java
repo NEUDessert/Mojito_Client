@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.json.JSONTokener;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -34,7 +36,7 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private String url = "http://192.168.50.198:8080/DataServer/uploadData";
+    private String url = "http://115.159.205.225:8080/DataServer/uploadData";
     private String lastUrl = "http://115.159.205.225:8080/li/";
 
     // TODO: Rename and change types of parameters
@@ -43,7 +45,7 @@ public class HomeFragment extends Fragment {
     private String account;
 
     private SimpleLineChart mSimpleLineChart;
-    private TextView tvAccount;
+    private TextView tvAccount, tvWeather;
     private Button btnWeather, btnInfo;
 
     private OnFragmentInteractionListener mListener;
@@ -88,6 +90,7 @@ public class HomeFragment extends Fragment {
         tvAccount = (TextView) view.findViewById(R.id.tv_home_account);
         btnWeather = (Button) view.findViewById(R.id.btnWeather);
         btnInfo = (Button) view.findViewById(R.id.btnInfo);
+        tvWeather = (TextView) view.findViewById(R.id.tv_weather);
 
         String[] xItem = {"1","2","3","4","5","6","7"};
         String[] yItem = {"30","20","10","0","-10"};
@@ -105,7 +108,6 @@ public class HomeFragment extends Fragment {
         btnWeather.setOnClickListener(ClickHandler);
         btnInfo.setOnClickListener(ClickHandler);
 
-
         return view;
     }
 
@@ -121,7 +123,9 @@ public class HomeFragment extends Fragment {
                 case R.id.btnWeather:
                     Log.i("btnClickWeather", "ok");
                     try {
-                        OkHttpUtil.weatherGet();
+                        JSONTokener jsonWeather = new JSONTokener(OkHttpUtil.weatherGet());
+
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -82,6 +82,12 @@
                     android:text="天气"
                     android:id="@+id/btnWeather" />
 
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:text="天气"
+                    android:id="@+id/tvWeather"/>
+
             </LinearLayout>
 
         </LinearLayout>

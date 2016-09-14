@@ -408,7 +408,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_signOut){
-            Toast.makeText(getApplicationContext(), "等一会儿吧", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "已注销", Toast.LENGTH_SHORT).show();
+            OkHttpUtil.setResult(false);
             String name = getAccount();
             DataBaseUtil.deleteInSql(this, name);
             Intent i = new Intent(MainActivity.this, LoginActivity.class);

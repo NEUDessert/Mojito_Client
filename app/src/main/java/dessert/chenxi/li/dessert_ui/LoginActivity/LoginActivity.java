@@ -79,7 +79,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private TextView tvLoginFail, tvRegister;
     private CircleTextImageView portraitPic;
     private String lastUrl = "http://115.159.205.225:8080/li/";
-    private String newUrl = "http://219.216.65.185:8082/user/login.do";
+    private String newUrl = "http://192.168.50.197:8082/user/newlogin.do";
+    private String url = "http://115.159.205.225:8080/DataServer/login";
+    public static final String LOGIN_SUCCESS = "{\"error\":\"0\"}";
     private String historyInfo ;
     private String pieces[];
     private DataBase dataBase;
@@ -182,7 +184,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     private boolean signIn(String account, String password){
-        if (OkHttpUtil.postParams(lastUrl, account, password)){
+        if (OkHttpUtil.LoginPostParams(url, account, password)){
+
             return true;
         }else {
             return false;
