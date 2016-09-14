@@ -160,10 +160,11 @@ public class OkHttpUtil {
                 if (response.isSuccessful()) {
                     Log.i("Weather", "httpGet OK: " + response.toString());
                     Log.i("body", response.body().string());
+
                 } else {
                     Log.i("Weather", "httpGet error: " + response.toString());
                     Log.i("body", response.body().string());
-                    return response.body().string();
+
                 }
             }
         });
