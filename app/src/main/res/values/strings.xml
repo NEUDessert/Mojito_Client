@@ -35,6 +35,12 @@
     <string name="clickForMore">更多</string>
     <string name="homeName">用户名</string>
     <string name="historyTmp">历史温度:</string>
+    <string name="settings">设置设备参数</string>
+    <string name="buyMore">购买更多设备</string>
+    <string name="contactUs">联系我们</string>
+    <string name="moreHistoryData">更多历史数据</string>
+    <string name="outsideWeather">室外天气</string>
+    <string name="windInfo">风力</string>
 
     <string-array name="location_values">
         <item>卧室一</item>

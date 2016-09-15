@@ -11,19 +11,26 @@ import android.app.Fragment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import java.io.IOException;
 
 import dessert.chenxi.li.dessert_ui.MainActivity;
+import dessert.chenxi.li.dessert_ui.OkHttpUtil;
 import dessert.chenxi.li.dessert_ui.R;
 import dessert.chenxi.li.dessert_ui.dashboardView.view.DashboardView;
 
@@ -47,9 +54,11 @@ public class WeatherFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private DashboardView dashboardView;
+    private ImageView ivWeather;
     private TextView tvHum, tvPm25, tvGaswarning, tvFirewarning;
     private LinearLayout lyGaswarning, lyFireWarning;
-    private Handler handler;
+    private Handler handler, weatherHandler;
+    private String weather;
     private Vibrator vibrator;
 
     public WeatherFragment() {
@@ -82,6 +91,52 @@ public class WeatherFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        weatherHandler = new Handler(){
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    case 0:
+                        ivWeather.setImageResource(R.drawable.sun_pic);
+                        break;
+                    case 1:
+                        ivWeather.setImageResource(R.drawable.clound);
+                        break;
+                    case 2:
+                        ivWeather.setImageResource(R.drawable.sun_rain);
+                        break;
+                    case 3:
+                        ivWeather.setImageResource(R.drawable.thunder_rain);
+                        break;
+                    case 4:
+                        ivWeather.setImageResource(R.drawable.little_rain);
+                        break;
+                    case 5:
+                        ivWeather.setImageResource(R.drawable.mid_rain);
+                        break;
+                    case 6:
+                        ivWeather.setImageResource(R.drawable.little_sonw);
+                        break;
+                    case 7:
+                        ivWeather.setImageResource(R.drawable.sonw);
+                        break;
+                    case 8:
+                        ivWeather.setImageResource(R.drawable.sun_sonw);
+                        break;
+                    case 9:
+                        ivWeather.setImageResource(R.drawable.windy);
+                        break;
+                    case 10:
+                        ivWeather.setImageResource(R.drawable.danger_wind);
+                        break;
+                    case 11:
+                        ivWeather.setImageResource(R.drawable.clound_wind);
+                        break;
+                    default:
+                        break;
+                }
+                super.handleMessage(msg);
+            }
+        };
+
 
         handler = new Handler() {
             public void handleMessage(Message msg) {
@@ -92,6 +147,7 @@ public class WeatherFragment extends Fragment {
                 dashboardView.setPercent(tmp);
                 tvHum.setText(String.valueOf(hum));
                 tvPm25.setText(String.valueOf(pm25));
+
                 int tmpWarn = 90;
                 int humWarn = 10;
                 int pm25Warn = 980;
@@ -134,10 +190,28 @@ public class WeatherFragment extends Fragment {
             // TODO Auto-generated method stub
             while (true) {
                 try {
-                    Thread.sleep(5000);// 线程暂停10秒，单位毫秒
+                    Thread.sleep(5000);// 线程暂停5秒，单位毫秒
                     Message message = new Message();
                     message.what = 1;
                     handler.sendMessage(message);// 发送消息
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public class weatherThread implements Runnable{
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            while (true) {
+                try {
+                    Thread.sleep(60000);// 线程暂停60秒，单位毫秒
+                    Message message = new Message();
+                    message.what = weatherUtil.weatherNumInfo();
+                    weatherHandler.sendMessage(message);// 发送消息
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -174,6 +248,7 @@ public class WeatherFragment extends Fragment {
         lyGaswarning = (LinearLayout) view.findViewById(R.id.ly_gasWaring);
         lyFireWarning = (LinearLayout) view.findViewById(R.id.ly_fireWaring);
         vibrator = (Vibrator)getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        ivWeather = (ImageView) view.findViewById(R.id.iv_weather_item);
 
         dashboardView.setMaxNum(100);
         dashboardView.setPercent(0);
@@ -182,7 +257,10 @@ public class WeatherFragment extends Fragment {
         dashboardView.setStartColor(Color.rgb(240,50,21));
         dashboardView.setEndColor(Color.rgb(112,230,194));
 
+        ivWeather.setImageResource(R.drawable.sun_pic);
+
         new Thread(new MyThread()).start();
+        new Thread(new weatherThread()).start();
         // Inflate the layout for this fragment
         return view;
     }

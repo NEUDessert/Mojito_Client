@@ -55,7 +55,7 @@
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:background="@color/bg_gray"
-                            android:src="@drawable/thunder" />
+                            android:src="@drawable/sun_pic" />
 
                         <!--虚伪的分割块-->
                         <ImageView
@@ -80,6 +80,7 @@
                                     android:layout_gravity="center" />
 
                                 <TextView
+                                    android:text="23"
                                     android:id="@+id/tv_hum"
                                     android:layout_width="wrap_content"
                                     android:layout_height="45dp"
@@ -115,7 +116,8 @@
                 <LinearLayout
                 android:layout_width="360dp"
                 android:layout_height="263dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                    android:weightSum="1">
 
                     <!--pm2.5块-->
                     <LinearLayout
@@ -137,6 +139,7 @@
                             android:textColor="@color/white"
                             android:background="@color/bg_gray"/>
                         <TextView
+                            android:text="120"
                             android:id="@+id/tv_pm25"
                             android:layout_width="142dp"
                             android:layout_height="match_parent"
@@ -249,109 +252,187 @@
                     android:layout_height="3dp"
                     android:background="@color/transParent"/>
 
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:orientation="horizontal">-->
+
+                        <!--&lt;!&ndash;虚伪的分割块&ndash;&gt;-->
+                        <!--<ImageView-->
+                            <!--android:layout_width="3dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:background="@color/transParent"/>-->
+
+                        <!--<TextView-->
+                            <!--android:id="@+id/tv_everyDay"-->
+                            <!--android:layout_width="50dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:text="@string/futureWeather"-->
+                            <!--android:textSize="20sp"-->
+                            <!--android:gravity="center"-->
+                            <!--android:textColor="@color/white"-->
+                            <!--android:background="@color/bg_gray"/>-->
+
+                        <!--&lt;!&ndash;虚伪的分割块&ndash;&gt;-->
+                        <!--<ImageView-->
+                            <!--android:layout_width="3dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:background="@color/transParent"/>-->
+
+                        <!--<ImageView-->
+                            <!--android:layout_width="50dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:src="@drawable/sun_pic"-->
+                            <!--android:background="@color/bg_gray"/>-->
+
+                        <!--&lt;!&ndash;虚伪的分割块&ndash;&gt;-->
+                        <!--<ImageView-->
+                            <!--android:layout_width="3dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:background="@color/transParent"/>-->
+
+                        <!--<ImageView-->
+                            <!--android:layout_width="50dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:src="@drawable/clound"-->
+                            <!--android:background="@color/bg_gray"/>-->
+
+                        <!--&lt;!&ndash;虚伪的分割块&ndash;&gt;-->
+                        <!--<ImageView-->
+                            <!--android:layout_width="3dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:background="@color/transParent"/>-->
+
+                        <!--<ImageView-->
+                            <!--android:layout_width="50dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:src="@drawable/clound_wind"-->
+                            <!--android:background="@color/bg_gray"/>-->
+
+                        <!--&lt;!&ndash;虚伪的分割块&ndash;&gt;-->
+                        <!--<ImageView-->
+                            <!--android:layout_width="3dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:background="@color/transParent"/>-->
+
+                        <!--<ImageView-->
+                            <!--android:layout_width="50dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:src="@drawable/sun_rain"-->
+                            <!--android:background="@color/bg_gray"/>-->
+
+                        <!--&lt;!&ndash;虚伪的分割块&ndash;&gt;-->
+                        <!--<ImageView-->
+                            <!--android:layout_width="3dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:background="@color/transParent"/>-->
+
+                        <!--<ImageView-->
+                            <!--android:layout_width="50dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:src="@drawable/little_rain"-->
+                            <!--android:background="@color/bg_gray"/>-->
+
+                        <!--&lt;!&ndash;虚伪的分割块&ndash;&gt;-->
+                        <!--<ImageView-->
+                            <!--android:layout_width="3dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:background="@color/transParent"/>-->
+
+                        <!--<TextView-->
+                            <!--android:id="@+id/tv_clickForMore"-->
+                            <!--android:layout_width="36dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:text="@string/clickForMore"-->
+                            <!--android:textSize="20sp"-->
+                            <!--android:textColor="@color/white"-->
+                            <!--android:background="@color/bg_gray"-->
+                            <!--android:gravity="center"/>-->
+
+                        <!--&lt;!&ndash;虚伪的分割块&ndash;&gt;-->
+                        <!--<ImageView-->
+                            <!--android:layout_width="3dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:background="@color/transParent"/>-->
+                    <!--</LinearLayout>-->
+                    <!--虚伪的分割块-->
+
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="36dp"
+                        android:layout_weight="0.67"
                         android:orientation="horizontal">
 
-                        <!--虚伪的分割块-->
                         <ImageView
                             android:layout_width="3dp"
                             android:layout_height="match_parent"
                             android:background="@color/transParent"/>
 
-                        <TextView
-                            android:id="@+id/tv_everyDay"
-                            android:layout_width="50dp"
+                        <LinearLayout
+                            android:layout_width="175.5dp"
                             android:layout_height="match_parent"
-                            android:text="@string/futureWeather"
-                            android:textSize="20sp"
-                            android:textColor="@color/white"
-                            android:background="@color/bg_gray"/>
+                            android:background="@color/bg_gray">
 
-                        <!--虚伪的分割块-->
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="match_parent"
+                                android:text="@string/outsideWeather"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:gravity="center"/>
+
+                            <TextView
+                                android:layout_width="75.5dp"
+                                android:layout_height="match_parent"
+                                android:text="20"
+                                android:textColor="@color/white"
+                                android:textSize="40sp"
+                                android:gravity="center"/>
+
+                        </LinearLayout>
+
                         <ImageView
                             android:layout_width="3dp"
                             android:layout_height="match_parent"
                             android:background="@color/transParent"/>
 
-                        <ImageView
-                            android:layout_width="50dp"
+                        <LinearLayout
+                            android:layout_width="175.5dp"
                             android:layout_height="match_parent"
-                            android:src="@drawable/thunder"
-                            android:background="@color/bg_gray"/>
+                            android:background="@color/bg_gray">
 
-                        <!--虚伪的分割块-->
-                        <ImageView
-                            android:layout_width="3dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/transParent"/>
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:text="@string/windInfo"
+                                android:textColor="@color/white"
+                                android:textSize="30sp"
+                                android:gravity="center"/>
 
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/thunder"
-                            android:background="@color/bg_gray"/>
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:text="3"
+                                android:textColor="@color/white"
+                                android:textSize="40sp"
+                                android:gravity="center"/>
 
-                        <!--虚伪的分割块-->
-                        <ImageView
-                            android:layout_width="3dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/transParent"/>
+                            <TextView
+                                android:layout_width="55.5dp"
+                                android:layout_height="match_parent"
+                                android:text="级"
+                                android:textColor="@color/white"
+                                android:textSize="30sp"
+                                android:gravity="center"/>
 
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/thunder"
-                            android:background="@color/bg_gray"/>
+                        </LinearLayout>
 
-                        <!--虚伪的分割块-->
-                        <ImageView
-                            android:layout_width="3dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/transParent"/>
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/thunder"
-                            android:background="@color/bg_gray"/>
-
-                        <!--虚伪的分割块-->
-                        <ImageView
-                            android:layout_width="3dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/transParent"/>
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/thunder"
-                            android:background="@color/bg_gray"/>
-
-                        <!--虚伪的分割块-->
-                        <ImageView
-                            android:layout_width="3dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/transParent"/>
-
-                        <TextView
-                            android:id="@+id/tv_clickForMore"
-                            android:layout_width="36dp"
-                            android:layout_height="match_parent"
-                            android:text="@string/clickForMore"
-                            android:textSize="20sp"
-                            android:textColor="@color/white"
-                            android:background="@color/bg_gray"
-                            android:gravity="center"/>
-
-                        <!--虚伪的分割块-->
                         <ImageView
                             android:layout_width="3dp"
                             android:layout_height="match_parent"
                             android:background="@color/transParent"/>
                     </LinearLayout>
-                    <!--虚伪的分割块-->
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="3dp"

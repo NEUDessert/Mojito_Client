@@ -30,8 +30,8 @@ public class DashboardView extends View {
 
     private DashboardViewAttr dashboardViewattr;
     private int progressStrokeWidth;//进度弧的宽度
-    private String speed = "";//速度显示
-    private String unit = "";//显示单位
+    private String speed = "28";//速度显示
+    private String unit = "℃";//显示单位
     private int backgroundColor = 0;//背景颜色
     private String mText = ""; //文字内容
     private float startNum;

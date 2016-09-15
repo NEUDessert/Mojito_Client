@@ -1,28 +1,24 @@
 package dessert.chenxi.li.dessert_ui;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.hardware.usb.UsbManager;
-import android.media.MediaPlayer;
-import android.media.RingtoneManager;
-import android.net.Uri;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,17 +28,44 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.Set;
 
-import cn.wch.ch34xuartdriver.CH34xUARTDriver;
-import dessert.chenxi.li.dessert_ui.DataBase.DataBase;
 import dessert.chenxi.li.dessert_ui.DataBase.DataBaseUtil;
 import dessert.chenxi.li.dessert_ui.HomeFragment.HomeFragment;
 import dessert.chenxi.li.dessert_ui.LoginActivity.LoginActivity;
+import dessert.chenxi.li.dessert_ui.UsbSerial.UsbService;
 import dessert.chenxi.li.dessert_ui.VideoFragment.VideoFragment;
 import dessert.chenxi.li.dessert_ui.WeatherFragment.WeatherFragment;
 
 public class MainActivity extends AppCompatActivity {
+    /*
+     * Notifications from UsbService will be received here.
+     */
+    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case UsbService.ACTION_USB_PERMISSION_GRANTED: // USB PERMISSION GRANTED
+                    Toast.makeText(context, "USB Ready", Toast.LENGTH_SHORT).show();
+                    break;
+                case UsbService.ACTION_USB_PERMISSION_NOT_GRANTED: // USB PERMISSION NOT GRANTED
+                    Toast.makeText(context, "USB Permission not granted", Toast.LENGTH_SHORT).show();
+                    break;
+                case UsbService.ACTION_NO_USB: // NO USB CONNECTED
+                    Toast.makeText(context, "No USB connected", Toast.LENGTH_SHORT).show();
+                    break;
+                case UsbService.ACTION_USB_DISCONNECTED: // USB DISCONNECTED
+                    Toast.makeText(context, "USB disconnected", Toast.LENGTH_SHORT).show();
+                    break;
+                case UsbService.ACTION_USB_NOT_SUPPORTED: // USB NOT SUPPORTED
+                    Toast.makeText(context, "USB device not supported", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
+
     //  三个界面
     private HomeFragment fraTabHome;
     private VideoFragment fraTabVideo;
@@ -62,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvWeather;
     private TextView tvVideo;
     private TextView tvHome;
-    private TextView tvLocation;
 
     //位置更改
     private Spinner locationSpinner;
@@ -72,13 +94,27 @@ public class MainActivity extends AppCompatActivity {
 
     private String account;
 
+    //UsbSerial变量
+    private UsbService usbService;
+    private EditText editText, display;
+    private Button btnSendUsb;
+    private MyHandler mHandler;
+    private final ServiceConnection usbConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
+            usbService = ((UsbService.UsbBinder) arg1).getService();
+            usbService.setHandler(mHandler);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            usbService = null;
+        }
+    };
+
     //设备所需变量
-    private EditText readText;
-    public byte[] readBuffer;
-    private Button btnOpen;
-    private boolean isOpen;
-    private Handler handler;
     public static final String ACTION_USB_PERMISSION = "dessert.chenxi.li.dessert.USB_PERMISSION";
+    private String locUrl = "http://192.168.50.198:8080/DataServer/setDevice";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +128,24 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);//保存屏幕常亮
-
         //  初识化控件
         initViews();
+        mHandler = new MyHandler(this);
+//        display = (EditText) findViewById(R.id.etUsbDevice);
+//        editText = (EditText) findViewById(R.id.etSendUsb);
+//        btnSendUsb = (Button) findViewById(R.id.btn_sendUsb);
+//        btnSendUsb.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!editText.getText().toString().equals("")) {
+//                    String data = editText.getText().toString();
+//                    if (usbService != null) { // if UsbService was correctly binded, Send data
+//                        usbService.write(data.getBytes());
+//                    }
+//                }
+//            }
+//        });
+
         //  初始化界面管理器
         fragmentManager = getFragmentManager();
         //  初始化界面
@@ -102,45 +153,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.menu_pic));
 
-//            Intent intent = new Intent(this, LoginActivity.class);
-//            startActivity(intent);
-
-//            Bundle bundle = new Bundle();
-//            bundle.putBoolean("isLogin", false);
-//            Intent intent = new Intent();
-//            intent.setClass(MainActivity.this, LoginActivity.class);
-//            intent.putExtra("bundle", bundle);
-//            startActivityForResult(intent, 1);
-//
-//        initViews();
-
-
-//        MyApp.driver = new CH34xUARTDriver(
-//                (UsbManager)getSystemService(Context.USB_SERVICE)
-//                , this, ACTION_USB_PERMISSION);
-//
-//        if(!MyApp.driver.UsbFeatureSupported()){ //判断系统是否支持USB HOST
-//            Dialog dialog = new AlertDialog.Builder(MainActivity.this)
-//                    .setTitle("提示").setMessage("您的手机不支持USB HOST，请更换其他手机尝试。")
-//                    .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            System.exit(0);
-//                        }
-//                    }).create();
-//            dialog.setCanceledOnTouchOutside(false);
-//            dialog.show();
-//        }
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);//保存屏幕常亮
-//        readBuffer = new byte[512];
-//        isOpen = false;
-//
-//        handler = new Handler(){
-//            public void handleMessage(Message msg){
-//                readText.append((String)msg.obj);
-//            }
-//        };
     }
 
     //  定义控件、文本和设置点击的事件侦听器
@@ -161,27 +175,32 @@ public class MainActivity extends AppCompatActivity {
         TabVideo.setOnClickListener(ClickHandler);
         TabHome.setOnClickListener(ClickHandler);
 
-        tvLocation = (TextView) findViewById(R.id.tv_deviceName);
         locationSpinner = (Spinner)findViewById(R.id.locationValues);
-//        if (isLogin) {
         ArrayAdapter<CharSequence> baudAdapter = ArrayAdapter
                 .createFromResource(this, R.array.location_values,
                         R.layout.my_spinner_textview);
         baudAdapter.setDropDownViewResource(R.layout.my_spinner_textview);
         locationSpinner.setAdapter(baudAdapter);
-//        }else {
-//            ArrayAdapter<CharSequence> baudAdapter = ArrayAdapter
-//                    .createFromResource(this, R.array.notLogin,
-//                            R.layout.my_spinner_textview);
-//            baudAdapter.setDropDownViewResource(R.layout.my_spinner_textview);
-//            locationSpinner.setAdapter(baudAdapter);
-//            locationSpinner.setEnabled(false);
-//        }
         locationSpinner.setGravity(0x10);
         locationSpinner.setSelection(0);
 
-//        readText = (EditText) findViewById(R.id.et_dataString);
-//        btnOpen = (Button) findViewById(R.id.btn_open);
+        /*set the adapter listeners for baud */
+        locationSpinner.setOnItemSelectedListener(new MyOnBaudSelectedListener());
+    }
+
+    public class MyOnBaudSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view,
+                                   int position, long id) {
+            String loction = parent.getItemAtPosition(position).toString();
+            OkHttpUtil.postLocParams(locUrl,account,"1",loction);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent){
+
+        }
+
     }
 
     //  定义事件侦听器操作
@@ -419,19 +438,76 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (1 == requestCode) {
-//            if (1 == resultCode) {
-//                Bundle bundle = data.getBundleExtra("bundle");
-//                setIsLogin(bundle.getBoolean("isLogin"));
-//            }
-//        }
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
-
     //登陆标记
     public String getAccount(){
         return account;
     }
+
+    /*
+     * This handler will be passed to UsbService. Data received from serial port is displayed through this handler
+     */
+    private static class MyHandler extends Handler {
+        private final WeakReference<MainActivity> mActivity;
+
+        public MyHandler(MainActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UsbService.MESSAGE_FROM_SERIAL_PORT:
+                    String data = (String) msg.obj;
+                    mActivity.get().display.append(data);
+                    break;
+                case UsbService.CTS_CHANGE:
+                    Toast.makeText(mActivity.get(), "CTS_CHANGE",Toast.LENGTH_LONG).show();
+                    break;
+                case UsbService.DSR_CHANGE:
+                    Toast.makeText(mActivity.get(), "DSR_CHANGE",Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setFilters();  // Start listening notifications from UsbService
+        startService(UsbService.class, usbConnection, null); // Start UsbService(if it was not started before) and Bind it
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(mUsbReceiver);
+        unbindService(usbConnection);
+    }
+
+    private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
+        if (!UsbService.SERVICE_CONNECTED) {
+            Intent startService = new Intent(this, service);
+            if (extras != null && !extras.isEmpty()) {
+                Set<String> keys = extras.keySet();
+                for (String key : keys) {
+                    String extra = extras.getString(key);
+                    startService.putExtra(key, extra);
+                }
+            }
+            startService(startService);
+        }
+        Intent bindingIntent = new Intent(this, service);
+        bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    private void setFilters() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(UsbService.ACTION_USB_PERMISSION_GRANTED);
+        filter.addAction(UsbService.ACTION_NO_USB);
+        filter.addAction(UsbService.ACTION_USB_DISCONNECTED);
+        filter.addAction(UsbService.ACTION_USB_NOT_SUPPORTED);
+        filter.addAction(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED);
+        registerReceiver(mUsbReceiver, filter);
+    }
+
 }
