@@ -24,6 +24,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
@@ -84,11 +88,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvLocation;
 
     //位置信息
-    private String account;
-    private String location, deviceID;
+    private static String account;
+    private static String location, deviceID;
 
     //  用于对四个界面的fragment的管理
     private FragmentManager fragmentManager;
+
+    private static String url = "http://dessert.reveur.me:8080/DataServer/uploadData";
 
     //UsbSerial变量
     private UsbService usbService;
@@ -413,6 +419,26 @@ public class MainActivity extends AppCompatActivity {
             switch (msg.what) {
                 case UsbService.MESSAGE_FROM_SERIAL_PORT:
                     String data = (String) msg.obj;
+                    try {
+                        JSONTokener jsonInfo = new JSONTokener(data);
+                        JSONObject info = (JSONObject) jsonInfo.nextValue();
+                        int tempOri = Integer.parseInt(info.getString("temp"));
+                        int humOri = Integer.parseInt(info.getString("hum"));
+                        String temp = String.valueOf(tempOri/100);
+                        String hum = String.valueOf(humOri/100);
+                        String pm = info.getString("pm");
+                        Log.i("Info", temp+";"+hum+";"+pm);
+
+                        try {
+                            Thread.sleep(10000);// 线程暂停10秒，单位毫秒
+                            OkHttpUtil.postMoreParams(url, account, deviceID, temp, hum, pm);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case UsbService.CTS_CHANGE:
                     Toast.makeText(mActivity.get(), "CTS_CHANGE",Toast.LENGTH_LONG).show();

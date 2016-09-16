@@ -40,9 +40,7 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private String url = "http://192.168.50.198:8080/DataServer/uploadData";
-    private String testUrl = "http://192.168.50.198:8080/DataServer/test";
-    private String lastUrl = "http://115.159.205.225:8080/li/";
+    private String url = "http://dessert.reveur.me:8080/DataServer/uploadData";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -124,10 +122,7 @@ public class HomeFragment extends Fragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.tv_buyMore:
-                    Toast.makeText(getActivity(), "辽宁沈阳最大电子器械厂DESSERT倒闭了," +
-                            "王八蛋老板李晨曦吃喝嫖赌,欠下了3.5个亿,带着他的小姨子跑了," +
-                            "原价都是1000多、2000多的板子,统统20块,李晨曦王八蛋,你不是人," +
-                            "我们辛辛苦苦给你干了大半年,你不发工资,你还我血汗钱。！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "没店面啊！", Toast.LENGTH_LONG).show();
                     OkHttpUtil.postMoreParams(url, account ,devID ,"30","30","150");
                     break;
                 case R.id.tv_contactUs:

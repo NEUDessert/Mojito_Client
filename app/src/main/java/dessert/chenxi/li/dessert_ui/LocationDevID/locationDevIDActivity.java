@@ -24,8 +24,7 @@ public class locationDevIDActivity extends AppCompatActivity {
     private String account, location, devID;
     private String[] locationArr, deviceIDArr;
     private Spinner locationSpinner;
-    private String testUrl = "http://192.168.50.198:8080/DataServer/getDeviceInfo";
-    private String locUrl = "http://192.168.50.198:8080/DataServer/setDevice";
+    private String testUrl = "http://dessert.reveur.me:8080/DataServer/getDeviceInfo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

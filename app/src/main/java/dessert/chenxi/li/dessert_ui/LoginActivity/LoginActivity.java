@@ -78,10 +78,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private Button btnLogin;
     private TextView tvLoginFail, tvRegister;
     private CircleTextImageView portraitPic;
-    private String lastUrl = "http://115.159.205.225:8080/li/";
-    private String newUrl = "http://192.168.50.197:8082/user/newlogin.do";
-    private String url = "http://192.168.50.198:8080/DataServer/login";
-    public static final String LOGIN_SUCCESS = "{\"error\":\"0\"}";
+    private String url = "http://dessert.reveur.me:8080/DataServer/login";
     private String historyInfo ;
     private String pieces[];
     private DataBase dataBase;

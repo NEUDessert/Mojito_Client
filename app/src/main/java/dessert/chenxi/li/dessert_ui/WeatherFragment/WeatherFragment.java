@@ -58,7 +58,6 @@ public class WeatherFragment extends Fragment {
     private TextView tvHum, tvPm25, tvGaswarning, tvFirewarning, tvOutsideTemp, tvWindLevel;
     private LinearLayout lyGaswarning, lyFireWarning;
     private Handler handler, weatherHandler;
-    private String outsideTemp, windLevel;
     private Vibrator vibrator;
 
     public WeatherFragment() {
@@ -143,7 +142,6 @@ public class WeatherFragment extends Fragment {
                 super.handleMessage(msg);
             }
         };
-
 
         handler = new Handler() {
             public void handleMessage(Message msg) {
