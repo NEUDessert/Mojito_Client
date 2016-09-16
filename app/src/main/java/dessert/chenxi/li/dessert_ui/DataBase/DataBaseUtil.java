@@ -13,7 +13,7 @@ public class DataBaseUtil {
     private static final String TABLE_NAME = "User";
     //保存到数据库
     public static void insertInSql(Context context, String account, String password){
-        DataBase db = new DataBase(context);
+        DataBase db = new DataBase(context, TABLE_NAME);
         //取得一个可写的数据库对象
         SQLiteDatabase dbS = db.getWritableDatabase();
 
@@ -31,7 +31,7 @@ public class DataBaseUtil {
 
     //更新到数据库
     public static void updateInsql(Context context, String account, String password){
-        DataBase db = new DataBase(context);
+        DataBase db = new DataBase(context, TABLE_NAME);
         //取得一个只读的数据库对象
         SQLiteDatabase dbS = db.getWritableDatabase();
 
@@ -44,7 +44,7 @@ public class DataBaseUtil {
     //查询数据库
     public static String searchInSql(Context context, String account){
         String password = "";
-        DataBase db = new DataBase(context);
+        DataBase db = new DataBase(context, TABLE_NAME);
         //取得一个可读的数据库对象
         SQLiteDatabase dbS = db.getReadableDatabase();
 
@@ -63,7 +63,7 @@ public class DataBaseUtil {
     public static String readFirstInSql(Context context){
         String account_out = "";
         String password_out = "";
-        DataBase db = new DataBase(context);
+        DataBase db = new DataBase(context, TABLE_NAME);
         //取得一个可读的数据库对象
         SQLiteDatabase dbS = db.getReadableDatabase();
 
@@ -79,7 +79,7 @@ public class DataBaseUtil {
 
     //删除数据
     public static void deleteInSql(Context context, String account){
-        DataBase db = new DataBase(context);
+        DataBase db = new DataBase(context, TABLE_NAME);
         //取得一个可读的数据库对象
         SQLiteDatabase dbS = db.getWritableDatabase();
 
@@ -89,7 +89,7 @@ public class DataBaseUtil {
 
     //判断空否
     public static boolean isEmpty(Context context){
-        DataBase db = new DataBase(context);
+        DataBase db = new DataBase(context, TABLE_NAME);
         //取得一个可读的数据库对象
         SQLiteDatabase dbS = db.getReadableDatabase();
         Cursor c = dbS.query(TABLE_NAME,null,null,null,null,null,null);//查询并获得游标

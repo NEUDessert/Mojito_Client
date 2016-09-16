@@ -29,16 +29,16 @@
                 android:text="@string/location"
                 android:textColor="@color/white" />
 
-            <Spinner
-                android:id="@+id/locationValues"
-                android:layout_width="90dp"
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="120dp"
+                android:textSize="23sp"
                 android:layout_height="match_parent"
-                android:background="@color/transParent"
                 android:gravity="center"
-                android:inputType="none"/>
+                android:textColor="@color/white" />
 
             <ImageView
-                android:layout_width="60dp"
+                android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:background="@color/transParent"/>
         </LinearLayout>

@@ -55,10 +55,10 @@ public class WeatherFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private DashboardView dashboardView;
     private ImageView ivWeather;
-    private TextView tvHum, tvPm25, tvGaswarning, tvFirewarning;
+    private TextView tvHum, tvPm25, tvGaswarning, tvFirewarning, tvOutsideTemp, tvWindLevel;
     private LinearLayout lyGaswarning, lyFireWarning;
     private Handler handler, weatherHandler;
-    private String weather;
+    private String outsideTemp, windLevel;
     private Vibrator vibrator;
 
     public WeatherFragment() {
@@ -93,7 +93,10 @@ public class WeatherFragment extends Fragment {
 
         weatherHandler = new Handler(){
             public void handleMessage(Message msg) {
-                switch (msg.what){
+                int weather = msg.getData().getInt("weather");
+                String outsideTemp = msg.getData().getString("outsideTemp");
+                String windLevel = msg.getData().getString("windLevel");
+                switch (weather){
                     case 0:
                         ivWeather.setImageResource(R.drawable.sun_pic);
                         break;
@@ -133,6 +136,10 @@ public class WeatherFragment extends Fragment {
                     default:
                         break;
                 }
+
+                tvOutsideTemp.setText(outsideTemp);
+                tvWindLevel.setText(windLevel);
+
                 super.handleMessage(msg);
             }
         };
@@ -210,7 +217,12 @@ public class WeatherFragment extends Fragment {
                 try {
                     Thread.sleep(60000);// 线程暂停60秒，单位毫秒
                     Message message = new Message();
-                    message.what = weatherUtil.weatherNumInfo();
+
+                    Bundle bundle=new Bundle();
+                    bundle.putInt("weather", weatherUtil.weatherNumInfo());
+                    bundle.putString("outsideTemp", weatherUtil.getTemp());
+                    bundle.putString("windLevel", weatherUtil.getWind());
+                    message.setData(bundle);//bundle传值，耗时，效率低
                     weatherHandler.sendMessage(message);// 发送消息
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
@@ -249,6 +261,9 @@ public class WeatherFragment extends Fragment {
         lyFireWarning = (LinearLayout) view.findViewById(R.id.ly_fireWaring);
         vibrator = (Vibrator)getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         ivWeather = (ImageView) view.findViewById(R.id.iv_weather_item);
+
+        tvOutsideTemp = (TextView) view.findViewById(R.id.tvOutsideWeather);
+        tvWindLevel = (TextView) view.findViewById(R.id.tvWindLevel);
 
         dashboardView.setMaxNum(100);
         dashboardView.setPercent(0);

@@ -21,6 +21,7 @@ import org.json.JSONTokener;
 import java.io.IOException;
 import java.util.HashMap;
 
+import dessert.chenxi.li.dessert_ui.MainActivity;
 import dessert.chenxi.li.dessert_ui.OkHttpUtil;
 import dessert.chenxi.li.dessert_ui.R;
 import dessert.chenxi.li.dessert_ui.SimpleLineChart.SimpleLineChart;
@@ -40,16 +41,17 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private String url = "http://192.168.50.198:8080/DataServer/uploadData";
+    private String testUrl = "http://192.168.50.198:8080/DataServer/test";
     private String lastUrl = "http://115.159.205.225:8080/li/";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private String account;
+    private String account, devID;
 
     private SimpleLineChart mSimpleLineChart;
     private TextView tvAccount, tvSettings, tvMoreHistory, tvBuyMore, tvContactUs;
-    private Button btnWeather, btnInfo;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -126,7 +128,7 @@ public class HomeFragment extends Fragment {
                             "王八蛋老板李晨曦吃喝嫖赌,欠下了3.5个亿,带着他的小姨子跑了," +
                             "原价都是1000多、2000多的板子,统统20块,李晨曦王八蛋,你不是人," +
                             "我们辛辛苦苦给你干了大半年,你不发工资,你还我血汗钱。！", Toast.LENGTH_LONG).show();
-                    OkHttpUtil.postMoreParams(url,"admin","2","30","30","150");
+                    OkHttpUtil.postMoreParams(url, account ,devID ,"30","30","150");
                     break;
                 case R.id.tv_contactUs:
                     Toast.makeText(getActivity(), "自己打电话去！", Toast.LENGTH_SHORT).show();
@@ -183,5 +185,8 @@ public class HomeFragment extends Fragment {
 
     public void setAccount(String name){
         account = name;
+    }
+    public void setDevID(String deviceID){
+        devID = deviceID;
     }
 }

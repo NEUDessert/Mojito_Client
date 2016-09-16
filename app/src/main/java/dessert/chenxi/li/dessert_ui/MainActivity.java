@@ -14,17 +14,13 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,19 +81,17 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvWeather;
     private TextView tvVideo;
     private TextView tvHome;
+    private TextView tvLocation;
 
-    //位置更改
-    private Spinner locationSpinner;
+    //位置信息
+    private String account;
+    private String location, deviceID;
 
     //  用于对四个界面的fragment的管理
     private FragmentManager fragmentManager;
 
-    private String account;
-
     //UsbSerial变量
     private UsbService usbService;
-    private EditText editText, display;
-    private Button btnSendUsb;
     private MyHandler mHandler;
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
@@ -112,9 +106,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    //设备所需变量
-    public static final String ACTION_USB_PERMISSION = "dessert.chenxi.li.dessert.USB_PERMISSION";
-    private String locUrl = "http://192.168.50.198:8080/DataServer/setDevice";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,29 +113,17 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         account =intent.getStringExtra("account");
+        location = intent.getStringExtra("location");
+        deviceID = intent.getStringExtra("devID");
+        Log.i("Info", location+":"+deviceID);
 
         //从上个Activity传过来的值
         Toast.makeText(this, account+"登陆", Toast.LENGTH_SHORT).show();
-
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);//保存屏幕常亮
         //  初识化控件
         initViews();
         mHandler = new MyHandler(this);
-//        display = (EditText) findViewById(R.id.etUsbDevice);
-//        editText = (EditText) findViewById(R.id.etSendUsb);
-//        btnSendUsb = (Button) findViewById(R.id.btn_sendUsb);
-//        btnSendUsb.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!editText.getText().toString().equals("")) {
-//                    String data = editText.getText().toString();
-//                    if (usbService != null) { // if UsbService was correctly binded, Send data
-//                        usbService.write(data.getBytes());
-//                    }
-//                }
-//            }
-//        });
 
         //  初始化界面管理器
         fragmentManager = getFragmentManager();
@@ -154,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.menu_pic));
-
     }
 
     //  定义控件、文本和设置点击的事件侦听器
@@ -170,36 +148,12 @@ public class MainActivity extends AppCompatActivity {
         tvWeather = (TextView) findViewById(R.id.tv_weather);
         tvVideo = (TextView) findViewById(R.id.tv_video);
         tvHome = (TextView) findViewById(R.id.tv_home);
+        tvLocation = (TextView) findViewById(R.id.tv_location);
 
+        tvLocation.setText(location);
         TabWeather.setOnClickListener(ClickHandler);
         TabVideo.setOnClickListener(ClickHandler);
         TabHome.setOnClickListener(ClickHandler);
-
-        locationSpinner = (Spinner)findViewById(R.id.locationValues);
-        ArrayAdapter<CharSequence> baudAdapter = ArrayAdapter
-                .createFromResource(this, R.array.location_values,
-                        R.layout.my_spinner_textview);
-        baudAdapter.setDropDownViewResource(R.layout.my_spinner_textview);
-        locationSpinner.setAdapter(baudAdapter);
-        locationSpinner.setGravity(0x10);
-        locationSpinner.setSelection(0);
-
-        /*set the adapter listeners for baud */
-        locationSpinner.setOnItemSelectedListener(new MyOnBaudSelectedListener());
-    }
-
-    public class MyOnBaudSelectedListener implements AdapterView.OnItemSelectedListener {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view,
-                                   int position, long id) {
-            String loction = parent.getItemAtPosition(position).toString();
-            OkHttpUtil.postLocParams(locUrl,account,"1",loction);
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent){
-
-        }
 
     }
 
@@ -341,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
                     fraTabHome = new HomeFragment();
                     transaction.add(R.id.id_content, fraTabHome);
                     fraTabHome.setAccount(account);
+                    fraTabHome.setDevID(deviceID);
                 } else {
                     transaction.show(fraTabHome);
                 }
@@ -438,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //登陆标记
+    //账户名
     public String getAccount(){
         return account;
     }
@@ -458,7 +413,6 @@ public class MainActivity extends AppCompatActivity {
             switch (msg.what) {
                 case UsbService.MESSAGE_FROM_SERIAL_PORT:
                     String data = (String) msg.obj;
-                    mActivity.get().display.append(data);
                     break;
                 case UsbService.CTS_CHANGE:
                     Toast.makeText(mActivity.get(), "CTS_CHANGE",Toast.LENGTH_LONG).show();

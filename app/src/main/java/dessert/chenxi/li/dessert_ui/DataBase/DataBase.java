@@ -10,8 +10,8 @@ import android.util.Log;
  */
 public class DataBase extends SQLiteOpenHelper {
 
-    public DataBase(Context context) {
-        super(context, "User", null, 1);
+    public DataBase(Context context, String tableName) {
+        super(context, tableName, null, 1);
     }
 
     @Override

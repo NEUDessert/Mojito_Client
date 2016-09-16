@@ -42,7 +42,7 @@ import java.util.List;
 
 import dessert.chenxi.li.dessert_ui.DataBase.DataBase;
 import dessert.chenxi.li.dessert_ui.DataBase.DataBaseUtil;
-import dessert.chenxi.li.dessert_ui.MainActivity;
+import dessert.chenxi.li.dessert_ui.LocationDevID.locationDevIDActivity;
 import dessert.chenxi.li.dessert_ui.OkHttpUtil;
 import dessert.chenxi.li.dessert_ui.R;
 
@@ -98,7 +98,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mAccountView = (AutoCompleteTextView) findViewById(R.id.account);
         populateAutoComplete();
         mPasswordView = (EditText) findViewById(R.id.password);
-        dataBase = new DataBase(LoginActivity.this);
+        dataBase = new DataBase(LoginActivity.this, "User");
 
 //        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override
@@ -132,7 +132,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             //键值对
             intent.putExtra("account", pieces[0]);
             //从此activity传到另一Activity
-            intent.setClass(LoginActivity.this, MainActivity.class);
+            intent.setClass(LoginActivity.this, locationDevIDActivity.class);
             //启动另一个Activity
             LoginActivity.this.startActivity(intent);
             LoginActivity.this.finish();
@@ -447,7 +447,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 //键值对
                 intent.putExtra("account", mAccount);
                 //从此activity传到另一Activity
-                intent.setClass(LoginActivity.this, MainActivity.class);
+                intent.setClass(LoginActivity.this, locationDevIDActivity.class);
                 //启动另一个Activity
                 LoginActivity.this.startActivity(intent);
                 LoginActivity.this.finish();

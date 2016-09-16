@@ -14,12 +14,16 @@ import dessert.chenxi.li.dessert_ui.OkHttpUtil;
  * Created by 李天烨 on 2016/9/15.
  */
 public class weatherUtil {
-    public static String weatherNowInfo(){
+    private static String tq, qw, fl;
+
+    private static String weatherNowInfo(){
         try {
             JSONTokener jsonWeather = new JSONTokener(OkHttpUtil.weatherGet());
             JSONObject info = (JSONObject) jsonWeather.nextValue();
             JSONObject data = info.getJSONObject("data");
-            String tq = data.getString("tq");
+            tq = data.getString("tq");
+            qw = data.getString("qw");
+            fl = data.getString("fl");
             Log.i("tq", tq);
             return tq;
         } catch (IOException e) {
@@ -58,5 +62,12 @@ public class weatherUtil {
         }else{
             return 0;
         }
+    }
+
+    public  static String getTemp(){
+        return qw;
+    }
+    public  static String getWind(){
+        return fl;
     }
 }
