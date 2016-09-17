@@ -80,7 +80,7 @@
                                     android:layout_gravity="center" />
 
                                 <TextView
-                                    android:text="23"
+                                    android:text="0"
                                     android:id="@+id/tv_hum"
                                     android:layout_width="wrap_content"
                                     android:layout_height="45dp"
@@ -139,16 +139,16 @@
                             android:textColor="@color/white"
                             android:background="@color/bg_gray"/>
                         <TextView
-                            android:text="120"
+                            android:text="0"
                             android:id="@+id/tv_pm25"
-                            android:layout_width="142dp"
+                            android:layout_width="175dp"
                             android:layout_height="match_parent"
-                            android:textSize="80sp"
+                            android:textSize="70sp"
                             android:textColor="@color/white"
                             android:gravity="center"
                             android:background="@color/bg_gray"/>
                         <TextView
-                            android:layout_width="142dp"
+                            android:layout_width="108dp"
                             android:layout_height="match_parent"
                             android:text="@string/current_PM_unit"
                             android:textSize="40sp"

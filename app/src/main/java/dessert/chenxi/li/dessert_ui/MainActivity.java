@@ -464,7 +464,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("Info", temp+";"+hum+";"+pm);
 
                 try {
-                    Thread.sleep(8000);// 线程暂停10秒，单位毫秒
+                    Thread.sleep(1000);// 线程暂停1秒，单位毫秒
                     OkHttpUtil.postMoreParams(url, account, deviceID, temp, hum, pm, gas, fire, ir);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block

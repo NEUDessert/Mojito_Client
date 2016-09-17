@@ -202,7 +202,7 @@ public class WeatherFragment extends Fragment {
             // TODO Auto-generated method stub
             while (true) {
                 try {
-                    Thread.sleep(10000);// 线程暂停5秒，单位毫秒
+                    Thread.sleep(1000);// 线程暂停1秒，单位毫秒
                     Message message = new Message();
                     Bundle bundle=new Bundle();
                     bundle.putString("temp", MainActivity.getTempW());
