@@ -1,6 +1,7 @@
 package dessert.chenxi.li.dessert_ui;
 
 import android.util.Log;
+import android.widget.Button;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -93,12 +94,16 @@ public class OkHttpUtil {
     }
 
     public static boolean postMoreParams(String url, final String account, final String devID,
-                                                     final String temp, final String hum, final String air) {
+                                         final String temp, final String hum, final String air,
+                                         final boolean fire, final boolean gas, final boolean ir) {
         RequestBody body = new FormBody.Builder().add("username", account)
                                                  .add("devID", devID)
                                                  .add("temp", temp)
                                                  .add("hum", hum)
                                                  .add("air", air)
+                                                 .add("fire", String.valueOf(fire))
+                                                 .add("gas", String.valueOf(gas))
+                                                 .add("ir", String.valueOf(ir))
                                                  .build();
         Request request = new Request.Builder().url(url).post(body).build();
         Log.i("request",request.toString());

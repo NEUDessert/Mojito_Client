@@ -123,7 +123,6 @@ public class HomeFragment extends Fragment {
             switch (view.getId()) {
                 case R.id.tv_buyMore:
                     Toast.makeText(getActivity(), "没店面啊！", Toast.LENGTH_LONG).show();
-                    OkHttpUtil.postMoreParams(url, account ,devID ,"30","30","150");
                     break;
                 case R.id.tv_contactUs:
                     Toast.makeText(getActivity(), "自己打电话去！", Toast.LENGTH_SHORT).show();

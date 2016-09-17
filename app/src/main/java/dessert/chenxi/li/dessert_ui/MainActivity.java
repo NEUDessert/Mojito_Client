@@ -90,6 +90,12 @@ public class MainActivity extends AppCompatActivity {
     //位置信息
     private static String account;
     private static String location, deviceID;
+    private static String tempW = "0";
+    private static String humW = "0";
+    private static String pm25W = "0";
+    private static boolean gasW = false;
+    private static boolean fireW = false;
+
 
     //  用于对四个界面的fragment的管理
     private FragmentManager fragmentManager;
@@ -409,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private static class MyHandler extends Handler {
         private final WeakReference<MainActivity> mActivity;
-
+        private static String data = "";
         public MyHandler(MainActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
@@ -418,26 +424,11 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case UsbService.MESSAGE_FROM_SERIAL_PORT:
-                    String data = (String) msg.obj;
-                    try {
-                        JSONTokener jsonInfo = new JSONTokener(data);
-                        JSONObject info = (JSONObject) jsonInfo.nextValue();
-                        int tempOri = Integer.parseInt(info.getString("temp"));
-                        int humOri = Integer.parseInt(info.getString("hum"));
-                        String temp = String.valueOf(tempOri/100);
-                        String hum = String.valueOf(humOri/100);
-                        String pm = info.getString("pm");
-                        Log.i("Info", temp+";"+hum+";"+pm);
-
-                        try {
-                            Thread.sleep(10000);// 线程暂停10秒，单位毫秒
-                            OkHttpUtil.postMoreParams(url, account, deviceID, temp, hum, pm);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    String tmp = (String)msg.obj;
+                    data += tmp;
+                    if(tmp.endsWith("}")) {
+                        executeData(data);
+                        data = "";
                     }
                     break;
                 case UsbService.CTS_CHANGE:
@@ -448,8 +439,42 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
-    }
+        private static void executeData(String data) {
+            try {
+                JSONTokener jsonInfo = new JSONTokener(data);
+                Log.i("getJson", data);
+                Log.i("json", jsonInfo.toString());
+                JSONObject info = (JSONObject) jsonInfo.nextValue();
+                int tempOri = Integer.parseInt(info.getString("temp"));
+                int humOri = Integer.parseInt(info.getString("hum"));
+                int pmOri = Integer.parseInt(info.getString("pm"));
+                String temp = String.valueOf(tempOri/100);
+                String hum = String.valueOf(humOri/100);
+                String pm = String.valueOf(pmOri);
+                boolean fire = info.getBoolean("fire");
+                boolean gas = info.getBoolean("gas");
+                boolean ir = info.getBoolean("ir");
 
+                tempW = temp;
+                humW = hum;
+                pm25W = pm;
+                gasW = gas;
+                fireW = fire;
+
+                Log.i("Info", temp+";"+hum+";"+pm);
+
+                try {
+                    Thread.sleep(8000);// 线程暂停10秒，单位毫秒
+                    OkHttpUtil.postMoreParams(url, account, deviceID, temp, hum, pm, gas, fire, ir);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -490,4 +515,15 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(mUsbReceiver, filter);
     }
 
+
+    public static String getTempW(){
+        return tempW;}
+    public  static String getHumW(){
+        return humW;}
+    public static String getPm25W(){
+        return pm25W;}
+    public static boolean isGasW(){
+        return gasW;}
+    public static boolean isFireW(){
+        return fireW;}
 }

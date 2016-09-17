@@ -145,30 +145,37 @@ public class WeatherFragment extends Fragment {
 
         handler = new Handler() {
             public void handleMessage(Message msg) {
-                // 处理信息
-                int tmp = (int)(Math.random()*100);
-                int hum = (int)(Math.random()*100);
-                int pm25 = (int)(Math.random()*1000);
-                dashboardView.setPercent(tmp);
-                tvHum.setText(String.valueOf(hum));
-                tvPm25.setText(String.valueOf(pm25));
+//                // 处理信息
+//                int tmp = (int)(Math.random()*100);
+//                int hum = (int)(Math.random()*100);
+//                int pm25 = (int)(Math.random()*1000);
+//                dashboardView.setPercent(tmp);
+//                tvHum.setText(String.valueOf(hum));
+//                tvPm25.setText(String.valueOf(pm25));
 
-                int tmpWarn = 90;
-                int humWarn = 10;
-                int pm25Warn = 980;
+                String tempOri = msg.getData().getString("temp");
+                int temp = Integer.parseInt(tempOri);
+                String hum = msg.getData().getString("hum");
+                String pm = msg.getData().getString("pm");
+                boolean fire = msg.getData().getBoolean("fire");
+                boolean gas = msg.getData().getBoolean("gas");
+
+                dashboardView.setPercent(temp);
+                tvHum.setText(hum);
+                tvPm25.setText(pm);
 
                 //火灾提醒
-                if ((tmp > tmpWarn && hum < humWarn) || (pm25 > pm25Warn)){
+                if (gas || fire){
                     //提醒
-                    if ((tmp > tmpWarn && hum < humWarn) && (pm25 > pm25Warn)){
+                    if (gas && fire){
                         lyFireWarning.setBackgroundColor(Color.RED);
                         tvFirewarning.setText("危险");
                         lyGaswarning.setBackgroundColor(Color.RED);
                         tvGaswarning.setText("危险");
-                    }else if ((tmp > tmpWarn && hum < humWarn) && !(pm25 > pm25Warn)){
+                    }else if (!gas && fire){
                         lyFireWarning.setBackgroundColor(Color.RED);
                         tvFirewarning.setText("危险");
-                    }else if (!(tmp > tmpWarn && hum < humWarn) && (pm25 > pm25Warn)){
+                    }else {
                         lyGaswarning.setBackgroundColor(Color.RED);
                         tvGaswarning.setText("危险");
                     }
@@ -195,8 +202,15 @@ public class WeatherFragment extends Fragment {
             // TODO Auto-generated method stub
             while (true) {
                 try {
-                    Thread.sleep(5000);// 线程暂停5秒，单位毫秒
+                    Thread.sleep(10000);// 线程暂停5秒，单位毫秒
                     Message message = new Message();
+                    Bundle bundle=new Bundle();
+                    bundle.putString("temp", MainActivity.getTempW());
+                    bundle.putString("hum", MainActivity.getHumW());
+                    bundle.putString("pm", MainActivity.getPm25W());
+                    bundle.putBoolean("gas", MainActivity.isGasW());
+                    bundle.putBoolean("fire", MainActivity.isFireW());
+                    message.setData(bundle);//bundle传值，耗时，效率低
                     message.what = 1;
                     handler.sendMessage(message);// 发送消息
                 } catch (InterruptedException e) {
