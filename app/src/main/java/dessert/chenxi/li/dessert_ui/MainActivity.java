@@ -447,7 +447,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject info = (JSONObject) jsonInfo.nextValue();
                 int tempOri = Integer.parseInt(info.getString("temp"));
                 int humOri = Integer.parseInt(info.getString("hum"));
-                int pmOri = Integer.parseInt(info.getString("pm"));
+                int pmOri = (int)Double.parseDouble(info.getString("pm"));
                 String temp = String.valueOf(tempOri/100);
                 String hum = String.valueOf(humOri/100);
                 String pm = String.valueOf(pmOri);

@@ -1,1 +1,1 @@
-# Dessert Macaron Android App
+'Mojito Android Client' 
